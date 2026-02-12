@@ -211,7 +211,8 @@ function SuccessView({ onReplay }: { onReplay: () => void }) {
     };
   });
 
-  const headerOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]); 
+  const headerOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const buttonOpacity = useTransform(scrollYProgress, [0.9, 1], [0, 1]);
 
   return (
     <div className="h-[400vh] relative bg-stone-50 overflow-x-hidden font-romantic">
@@ -243,6 +244,31 @@ function SuccessView({ onReplay }: { onReplay: () => void }) {
             </motion.div>
           ))}
         </div>
+      </div>
+
+      {/* Header - Disappears on scroll */}
+      <div className="fixed inset-0 pointer-events-none z-20 flex flex-col items-center justify-center p-6">
+        <motion.div 
+          style={{ opacity: headerOpacity }}
+          className="absolute text-center top-[60%] bg-white/40 backdrop-blur-sm p-8 rounded-3xl border border-white/30 shadow-lg" 
+        >
+          <div className="flex items-baseline justify-center gap-3 mb-4 flex-wrap">
+             <motion.span 
+              animate={{ scale: [1, 1.2, 1], rotate: [0, -5, 5, 0] }}
+              transition={{ duration: 0.8, repeat: Infinity, repeatDelay: 1 }}
+              className="text-6xl md:text-8xl font-bold text-stone-900 tracking-tighter inline-block"
+            >
+              Horray!
+            </motion.span>
+             <span className="text-4xl md:text-6xl font-medium text-stone-900 tracking-tight">
+               그럴 줄 알았어 !!
+            </span>
+          </div>
+          
+          <p className="text-xl md:text-2xl italic text-stone-600 font-light mt-4">
+            scroll down 주세요~
+          </p>
+        </motion.div>
       </div>
 
       {/* Envelope & Letter System */}
