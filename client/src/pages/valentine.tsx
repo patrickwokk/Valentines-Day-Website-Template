@@ -31,7 +31,7 @@ type GameState = "INITIAL" | "REJECT_1" | "REJECT_2" | "SUCCESS";
 const GALLERY_PHOTOS = [
   // Background/Edges layer (Rendered first = Back)
   { src: photo7, rotate: -6, x: -42, y: -2, z: 0, scale: 0.9 }, // Moved to back (first)
-  { src: photo8, rotate: 4, x: 42, y: 25, z: 0, scale: 0.9 },
+  { src: photo8, rotate: 4, x: -38, y: -32, z: 1, scale: 0.9 }, // Moved to top left, safe from edge
   { src: photo9, rotate: -3, x: -18, y: 35, z: 0, scale: 0.9 },
   
   // Middle layer
