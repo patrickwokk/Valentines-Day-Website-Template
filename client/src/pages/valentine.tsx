@@ -277,7 +277,7 @@ function SuccessView({ onReplay }: { onReplay: () => void }) {
       </div>
 
       {/* Replay Button - Only active at end */}
-      <motion.div style={{ opacity: buttonOpacity }} className="fixed bottom-10 left-1/2 -translate-x-1/2 pointer-events-auto z-50">
+      <motion.div style={{ opacity: buttonOpacity }} className="fixed bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 pointer-events-auto z-50">
           <button
           onClick={onReplay}
           className="px-10 py-4 bg-stone-900 text-white font-sans text-xs tracking-[0.2em] uppercase hover:bg-stone-700 transition-colors shadow-lg rounded-sm"
@@ -296,8 +296,11 @@ function EnvelopeLetter({ scrollYProgress }: { scrollYProgress: any }) {
 
   const flapRotate = useTransform(scrollYProgress, [0.55, 0.65], [0, -180]);
 
-  const letterSlideY = useTransform(scrollYProgress, [0.65, 0.8], [0, -380]);
-  const letterOpacity = useTransform(scrollYProgress, [0.65, 0.7], [0, 1]);
+  // Rise out of the envelope, then settle slightly lower so it remains readable.
+  const letterRiseY = useTransform(scrollYProgress, [0.65, 0.82], [0, -240]);
+  const letterSettleY = useTransform(scrollYProgress, [0.82, 1.0], [0, 320]);
+  const letterSlideY = useTransform(() => letterRiseY.get() + letterSettleY.get());
+  const letterOpacity = useTransform(scrollYProgress, [0.65, 0.71], [0, 1]);
 
   const envelopeFadeY = useTransform(scrollYProgress, [0.78, 0.9], [0, 300]);
   const envelopeFadeOpacity = useTransform(scrollYProgress, [0.78, 0.9], [1, 0]);
