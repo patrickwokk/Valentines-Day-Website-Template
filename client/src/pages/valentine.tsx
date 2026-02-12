@@ -313,14 +313,14 @@ function EnvelopeLetter({ scrollYProgress }: { scrollYProgress: any }) {
   const envelopeFrontZ = useTransform(scrollYProgress, [0.9, 0.94], [12, 1]);
 
   return (
-    <div className="relative w-full max-w-lg mx-auto" style={{ perspective: "1000px" }}>
-      
-      <motion.div 
-        style={{ y: envelopeStageY, opacity: envelopeOpacity, transformStyle: "preserve-3d" }}
+    <div className="relative w-full max-w-lg mx-auto">
+
+      <motion.div
+        style={{ y: envelopeStageY, opacity: envelopeOpacity }}
         className="relative w-[320px] md:w-[400px] h-[220px] md:h-[260px] mx-auto z-20"
       >
         {/* Envelope back panel */}
-        <motion.div style={{ y: envelopeShellY, translateZ: envelopeBackZ }} className="absolute inset-0">
+        <motion.div style={{ y: envelopeShellY, zIndex: envelopeBackZ }} className="absolute inset-0">
           <div className="absolute inset-0 rounded-md border border-[#cebba7] bg-[#d6c4b0] shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_16px_34px_rgba(69,47,30,0.2)]" />
           <div
             className="absolute left-0 right-0 top-0 z-[2] bg-[#cbb8a4]"
@@ -329,7 +329,7 @@ function EnvelopeLetter({ scrollYProgress }: { scrollYProgress: any }) {
         </motion.div>
 
         {/* Letter sheet: clipped to envelope bounds until final reveal */}
-        <motion.div className="absolute inset-0 overflow-visible" style={{ clipPath: letterRevealClip, translateZ: letterLayerZ }}>
+        <motion.div className="absolute inset-0 overflow-visible" style={{ clipPath: letterRevealClip, zIndex: letterLayerZ }}>
           <motion.div
             style={{ y: letterY, scale: letterScale, rotate: letterRotate }}
             className="absolute left-3 right-3 top-3 origin-bottom rounded-[3px] border border-[#eadfce] bg-gradient-to-b from-[#fffefb] via-[#fff9ef] to-[#f4e8d3] px-5 pb-8 pt-6 text-center shadow-[0_18px_42px_rgba(84,63,41,0.26)] md:left-4 md:right-4 md:px-7"
@@ -364,7 +364,7 @@ function EnvelopeLetter({ scrollYProgress }: { scrollYProgress: any }) {
         </motion.div>
 
         {/* Envelope front pocket + flap */}
-        <motion.div style={{ y: envelopeShellY, translateZ: envelopeFrontZ }} className="absolute inset-0">
+        <motion.div style={{ y: envelopeShellY, zIndex: envelopeFrontZ, perspective: "1000px" }} className="absolute inset-0">
           <div className="absolute inset-0 rounded-md border border-[#d6c4b0]" />
           <div className="absolute bottom-0 left-0 top-0 w-[14px] bg-[#d9c8b5]" />
           <div className="absolute bottom-0 right-0 top-0 w-[14px] bg-[#d9c8b5]" />
