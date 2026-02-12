@@ -29,26 +29,26 @@ import floralBg from "@assets/1c1e1934764a7859c7d06dd90ee9fd5e_1770876135345.jpg
 type GameState = "INITIAL" | "REJECT_1" | "REJECT_2" | "SUCCESS";
 
 const GALLERY_PHOTOS = [
-  // Top layer (closest/fastest)
-  { src: photo1, rotate: -5, x: -30, y: -20, z: 2, scale: 1.1 },
-  { src: photo2, rotate: 3, x: 30, y: -25, z: 2, scale: 1.1 },
+  // Top layer (closest/fastest) - Centered cluster
+  { src: photo1, rotate: -5, x: -15, y: -10, z: 2, scale: 1.1 },
+  { src: photo2, rotate: 3, x: 15, y: -15, z: 2, scale: 1.1 },
   
-  // Middle layer
-  { src: photo3, rotate: -2, x: -45, y: 15, z: 1, scale: 1 },
-  { src: photo4, rotate: 6, x: 45, y: 10, z: 1, scale: 1 },
-  { src: photo5, rotate: -4, x: -10, y: -45, z: 1, scale: 1 },
-  { src: photo6, rotate: 2, x: 15, y: 40, z: 1, scale: 1 },
+  // Middle layer - Slightly wider
+  { src: photo3, rotate: -2, x: -25, y: 10, z: 1, scale: 1 },
+  { src: photo4, rotate: 6, x: 25, y: 5, z: 1, scale: 1 },
+  { src: photo5, rotate: -4, x: -5, y: -25, z: 1, scale: 1 },
+  { src: photo6, rotate: 2, x: 8, y: 25, z: 1, scale: 1 },
   
-  // Background/Edges layer
-  { src: photo7, rotate: -6, x: -45, y: -10, z: 0, scale: 0.9 },
-  { src: photo8, rotate: 4, x: 40, y: 30, z: 0, scale: 0.9 },
-  { src: photo9, rotate: -3, x: -20, y: 35, z: 0, scale: 0.9 },
+  // Background/Edges layer - Framing the center
+  { src: photo7, rotate: -6, x: -30, y: -5, z: 0, scale: 0.9 },
+  { src: photo8, rotate: 4, x: 28, y: 20, z: 0, scale: 0.9 },
+  { src: photo9, rotate: -3, x: -12, y: 20, z: 0, scale: 0.9 },
   
-  // New photos - mixed in
-  { src: photo10, rotate: 5, x: 25, y: -35, z: 1, scale: 1 },
-  { src: photo11, rotate: -4, x: -25, y: 55, z: 2, scale: 1.1 },
-  { src: photo12, rotate: 2, x: 35, y: 50, z: 0, scale: 0.9 },
-  { src: photo13, rotate: -2, x: 0, y: -55, z: 1, scale: 1 },
+  // New photos - Tucked in
+  { src: photo10, rotate: 5, x: 18, y: -25, z: 1, scale: 1 },
+  { src: photo11, rotate: -4, x: -18, y: 35, z: 2, scale: 1.1 },
+  { src: photo12, rotate: 2, x: 22, y: 30, z: 0, scale: 0.9 },
+  { src: photo13, rotate: -2, x: 0, y: -35, z: 1, scale: 1 },
 ];
 
 export default function ValentinePage() {
