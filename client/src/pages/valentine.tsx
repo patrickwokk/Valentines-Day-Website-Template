@@ -41,8 +41,8 @@ const GALLERY_PHOTOS = [
   { src: photo6, rotate: 2, x: 10, y: 40, z: 1, scale: 1 },
   
   // New photos - Tucked in but visible
-  // photo10 -> Top Right Corner
-  { src: photo10, rotate: 5, x: 45, y: -45, z: 1, scale: 1 }, 
+  // photo10 -> Moved a bit to the center from Top Right Corner
+  { src: photo10, rotate: 5, x: 38, y: -42, z: 1, scale: 1 }, 
   { src: photo11, rotate: -4, x: -28, y: 50, z: 2, scale: 1.1 },
   { src: photo12, rotate: 2, x: 32, y: 45, z: 0, scale: 0.9 },
   // photo13 -> Moved between photo5 (-8, -25) and photo10 (45, -45)
