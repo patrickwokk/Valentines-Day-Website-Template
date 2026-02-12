@@ -215,7 +215,7 @@ function SuccessView({ onReplay }: { onReplay: () => void }) {
   const buttonOpacity = useTransform(scrollYProgress, [0.9, 1], [0, 1]);
 
   return (
-    <div className="h-[400vh] relative bg-stone-50 overflow-x-hidden font-romantic">
+    <div className="h-[250vh] relative bg-stone-50 overflow-x-hidden font-romantic">
       
       {/* Fixed Background Container for Photos */}
       <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center overflow-hidden">
@@ -291,55 +291,54 @@ function SuccessView({ onReplay }: { onReplay: () => void }) {
 }
 
 function EnvelopeLetter({ scrollYProgress }: { scrollYProgress: any }) {
-  // Animation Timelines
-  
-  // 1. Envelope Entrance (Starts after photos are mostly gone)
-  // Enters from bottom: 0.45 -> 0.55
-  const envelopeEnterY = useTransform(scrollYProgress, [0.45, 0.55], [800, 0]);
-  const envelopeOpacity = useTransform(scrollYProgress, [0.45, 0.5], [0, 1]);
+  const envelopeEnterY = useTransform(scrollYProgress, [0.4, 0.55], [600, 0]);
+  const envelopeOpacity = useTransform(scrollYProgress, [0.4, 0.48], [0, 1]);
 
-  // 2. Flap opening (0.6 - 0.7)
-  const flapRotate = useTransform(scrollYProgress, [0.6, 0.7], [0, 180]);
-  const flapZIndex = useTransform(scrollYProgress, [0.6, 0.65, 0.66], [4, 4, 1]); // Flap goes behind letter once open
+  const flapRotate = useTransform(scrollYProgress, [0.58, 0.7], [0, -180]);
 
-  // 3. Letter sliding out (0.7 - 0.9)
-  // Moves from inside envelope (y=0) to fully out (y=-300ish)
-  // We'll also scale it up slightly as it comes out for readability
-  const letterY = useTransform(scrollYProgress, [0.7, 0.9], [100, -350]);
-  const letterScale = useTransform(scrollYProgress, [0.7, 0.9], [0.9, 1.1]);
-  
-  // 4. Envelope Exit (optional, keeps it cleaner)
-  const envelopeBodyY = useTransform(scrollYProgress, [0.8, 1.0], [0, 400]);
+  const letterY = useTransform(scrollYProgress, [0.7, 0.9], [0, -420]);
+  const letterScale = useTransform(scrollYProgress, [0.7, 0.9], [0.85, 1.05]);
+
+  const envelopeBodyY = useTransform(scrollYProgress, [0.82, 1.0], [0, 350]);
   const envelopeBodyOpacity = useTransform(scrollYProgress, [0.85, 1.0], [1, 0]);
 
   return (
-    <div className="relative w-full max-w-lg mx-auto perspective-1000">
+    <div className="relative w-full max-w-lg mx-auto" style={{ perspective: "1000px" }}>
       
-      {/* The Entire Envelope Container */}
       <motion.div 
         style={{ y: envelopeEnterY, opacity: envelopeOpacity }}
-        className="relative w-[320px] md:w-[400px] h-[240px] md:h-[300px] mx-auto z-20"
+        className="relative w-[320px] md:w-[400px] h-[220px] md:h-[260px] mx-auto z-20"
       >
         <motion.div
            style={{ y: envelopeBodyY, opacity: envelopeBodyOpacity }}
-           className="relative w-full h-full bg-[#eaddcf] shadow-2xl rounded-lg"
+           className="relative w-full h-full"
         >
-          {/* Envelope Body (Back) */}
-          <div className="absolute inset-0 bg-[#eaddcf] rounded-lg shadow-inner border border-[#d6c4b0]" />
+          {/* Envelope Back */}
+          <div className="absolute inset-0 bg-[#d6c4b0] rounded-md shadow-inner" />
+          
+          {/* Back flap triangle (visible behind everything) */}
+          <div 
+            className="absolute left-0 right-0 bg-[#cbb8a4] z-[1]" 
+            style={{ 
+              top: 0,
+              height: "55%",
+              clipPath: "polygon(0% 0%, 50% 100%, 100% 0%)" 
+            }} 
+          />
 
-          {/* The Letter Itself */}
+          {/* The Letter - starts hidden inside, slides UP out of envelope */}
           <motion.div
             style={{ 
               y: letterY,
               scale: letterScale,
             }}
-            className="absolute left-4 right-4 top-2 bg-[#fffbf0] shadow-md p-6 md:p-8 text-center flex flex-col items-center justify-start h-[450px] md:h-[550px] origin-bottom z-10 rounded-sm"
+            className="absolute left-3 right-3 bg-[#fffbf0] shadow-md p-5 md:p-7 text-center flex flex-col items-center justify-start origin-bottom z-[2] rounded-sm"
+            data-testid="letter-content"
           >
-             {/* Paper Texture/Lines */}
-             <div className="w-full h-full border-2 border-double border-[#e6dace] p-4 flex flex-col justify-between">
+             <div className="w-full border-2 border-double border-[#e6dace] p-4 flex flex-col justify-between" style={{ minHeight: "420px" }}>
                 
-                <div className="space-y-6">
-                  <p className="font-romantic font-bold text-2xl md:text-3xl text-stone-800 border-b border-stone-200 pb-4">
+                <div className="space-y-5">
+                  <p className="font-romantic font-bold text-2xl md:text-3xl text-stone-800 border-b border-stone-200 pb-3">
                     Dearest Ga-eun,
                   </p>
                   
@@ -352,7 +351,7 @@ function EnvelopeLetter({ scrollYProgress }: { scrollYProgress: any }) {
                   </p>
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-stone-200">
+                <div className="mt-6 pt-5 border-t border-stone-200">
                   <p className="font-romantic font-bold text-2xl md:text-4xl text-stone-900">
                     I love you, forever.
                   </p>
@@ -363,25 +362,37 @@ function EnvelopeLetter({ scrollYProgress }: { scrollYProgress: any }) {
              </div>
           </motion.div>
 
-          {/* Envelope Front Pockets (The triangles) */}
-          {/* Left Flap */}
-          <div className="absolute left-0 bottom-0 w-0 h-0 border-l-[160px] md:border-l-[200px] border-b-[120px] md:border-b-[150px] border-l-transparent border-b-[#e3d1be] border-r-0 rounded-bl-lg z-30" />
-          {/* Right Flap */}
-          <div className="absolute right-0 bottom-0 w-0 h-0 border-r-[160px] md:border-r-[200px] border-b-[120px] md:border-b-[150px] border-r-transparent border-b-[#e3d1be] border-l-0 rounded-br-lg z-30" />
-          {/* Bottom Flap (Covering the middle) */}
-          <div className="absolute bottom-0 left-0 right-0 h-[130px] md:h-[160px] bg-[#dfcdba] clip-path-triangle z-30 shadow-sm" style={{ clipPath: "polygon(0% 100%, 50% 0%, 100% 100%)" }} />
+          {/* Envelope Front Face - covers bottom half, hides the letter */}
+          <div 
+            className="absolute bottom-0 left-0 right-0 bg-[#eaddcf] border border-[#d6c4b0] rounded-b-md z-[5]" 
+            style={{ height: "100%" }}
+          />
 
-          {/* Top Flap (The one that opens) */}
+          {/* Front decorative V shape */}
+          <div 
+            className="absolute left-0 right-0 top-0 bg-[#e3d1be] z-[6]" 
+            style={{ 
+              height: "60%",
+              clipPath: "polygon(0% 0%, 50% 100%, 100% 0%)" 
+            }} 
+          />
+
+          {/* Top Flap (opens upward - rotates from bottom edge) */}
           <motion.div
             style={{ 
               rotateX: flapRotate,
-              zIndex: flapZIndex
             }}
-            className="absolute top-0 left-0 right-0 h-[130px] md:h-[160px] origin-top z-40"
+            className="absolute top-0 left-0 right-0 origin-top z-[8]"
           >
-            <div className="w-full h-full bg-[#eaddcf] shadow-md border-t border-[#d6c4b0]" style={{ clipPath: "polygon(0% 0%, 50% 100%, 100% 0%)" }}>
+            <div 
+              className="w-full bg-[#eaddcf] shadow-md border border-[#d6c4b0]" 
+              style={{ 
+                height: "140px",
+                clipPath: "polygon(0% 0%, 50% 100%, 100% 0%)" 
+              }}
+            >
               {/* Wax Seal */}
-               <div className="absolute top-[80px] md:top-[100px] left-1/2 -translate-x-1/2 w-12 h-12 bg-red-800 rounded-full shadow-lg flex items-center justify-center border-4 border-red-900/50">
+               <div className="absolute top-[85px] left-1/2 -translate-x-1/2 w-12 h-12 bg-red-800 rounded-full shadow-lg flex items-center justify-center border-4 border-red-900/50">
                   <Heart size={20} className="text-red-200" fill="currentColor" />
                </div>
             </div>
