@@ -293,98 +293,99 @@ function SuccessView({ onReplay }: { onReplay: () => void }) {
 function EnvelopeLetter({ scrollYProgress }: { scrollYProgress: any }) {
   const envelopeEnterY = useTransform(scrollYProgress, [0.4, 0.55], [600, 0]);
   const envelopeOpacity = useTransform(scrollYProgress, [0.4, 0.48], [0, 1]);
+  const flapRotate = useTransform(scrollYProgress, [0.54, 0.64], [0, -178]);
+  const flapOpacity = useTransform(scrollYProgress, [0.62, 0.72], [1, 0]);
+  const envelopeDriftY = useTransform(scrollYProgress, [0.94, 1.0], [0, 12]);
+  const envelopeStageY = useTransform(() => envelopeEnterY.get() + envelopeDriftY.get());
 
-  const flapRotate = useTransform(scrollYProgress, [0.55, 0.68], [0, -180]);
+  const letterY = useTransform(scrollYProgress, [0.7, 0.9, 1.0], [210, -110, -165]);
+  const letterScale = useTransform(scrollYProgress, [0.7, 0.9], [0.95, 1.01]);
+  const letterRotate = useTransform(scrollYProgress, [0.7, 0.9], [0, -0.5]);
+  const letterLayerZ = useTransform(scrollYProgress, [0.9, 0.94], [8, 24]);
+  const letterRevealClip = useTransform(
+    scrollYProgress,
+    [0.93, 0.985],
+    ["inset(0px 0px 0px 0px)", "inset(-700px -60px -700px -60px)"]
+  );
 
-  const letterY = useTransform(scrollYProgress, [0.7, 0.9], [0, -420]);
-  const letterScale = useTransform(scrollYProgress, [0.7, 0.9], [0.85, 1.05]);
-  const letterZIndex = useTransform(scrollYProgress, [0.69, 0.7], [2, 20]);
-
-  const envelopeBodyY = useTransform(scrollYProgress, [0.82, 1.0], [0, 350]);
-  const envelopeBodyOpacity = useTransform(scrollYProgress, [0.85, 1.0], [1, 0]);
+  const envelopeShellY = useTransform(scrollYProgress, [0.92, 1.0], [0, 34]);
+  const envelopeBackZ = useTransform(scrollYProgress, [0.9, 0.94], [2, 0]);
+  const envelopeFrontZ = useTransform(scrollYProgress, [0.9, 0.94], [12, 1]);
 
   return (
     <div className="relative w-full max-w-lg mx-auto" style={{ perspective: "1000px" }}>
       
       <motion.div 
-        style={{ y: envelopeEnterY, opacity: envelopeOpacity }}
+        style={{ y: envelopeStageY, opacity: envelopeOpacity, transformStyle: "preserve-3d" }}
         className="relative w-[320px] md:w-[400px] h-[220px] md:h-[260px] mx-auto z-20"
       >
-        {/* Letter - positioned relative to envelope but NOT clipped by it */}
-        <motion.div
-          style={{ 
-            y: letterY,
-            scale: letterScale,
-            zIndex: letterZIndex,
-          }}
-          className="absolute left-3 right-3 top-0 bg-[#fffbf0] shadow-md p-5 md:p-7 text-center flex flex-col items-center justify-start origin-bottom rounded-sm"
-          data-testid="letter-content"
-        >
-           <div className="w-full border-2 border-double border-[#e6dace] p-4 flex flex-col justify-between" style={{ minHeight: "420px" }}>
-              
+        {/* Envelope back panel */}
+        <motion.div style={{ y: envelopeShellY, translateZ: envelopeBackZ }} className="absolute inset-0">
+          <div className="absolute inset-0 rounded-md border border-[#cebba7] bg-[#d6c4b0] shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_16px_34px_rgba(69,47,30,0.2)]" />
+          <div
+            className="absolute left-0 right-0 top-0 z-[2] bg-[#cbb8a4]"
+            style={{ height: "56%", clipPath: "polygon(0% 0%, 50% 100%, 100% 0%)" }}
+          />
+        </motion.div>
+
+        {/* Letter sheet: clipped to envelope bounds until final reveal */}
+        <motion.div className="absolute inset-0 overflow-visible" style={{ clipPath: letterRevealClip, translateZ: letterLayerZ }}>
+          <motion.div
+            style={{ y: letterY, scale: letterScale, rotate: letterRotate }}
+            className="absolute left-3 right-3 top-3 origin-bottom rounded-[3px] border border-[#eadfce] bg-gradient-to-b from-[#fffefb] via-[#fff9ef] to-[#f4e8d3] px-5 pb-8 pt-6 text-center shadow-[0_18px_42px_rgba(84,63,41,0.26)] md:left-4 md:right-4 md:px-7"
+            data-testid="letter-content"
+          >
+            <div className="flex w-full flex-col justify-between border border-[#e6dace] bg-[#fffaf1]/95 p-4 md:p-5" style={{ minHeight: "500px" }}>
               <div className="space-y-5">
-                <p className="font-romantic font-bold text-2xl md:text-3xl text-stone-800 border-b border-stone-200 pb-3">
+                <div className="h-px w-full bg-gradient-to-r from-transparent via-[#c7b39f] to-transparent" />
+                <p className="border-b border-stone-200 pb-3 font-romantic text-2xl font-bold text-stone-800 md:text-3xl">
                   Dearest Ga-eun,
                 </p>
-                
-                <p className="font-romantic text-lg md:text-xl text-stone-700 leading-relaxed">
+
+                <p className="font-romantic text-lg leading-relaxed text-stone-700 md:text-xl">
                   From the moment we met, you've brought so much joy into my life. Your smile, your laugh, and even the way you look at me when I'm being silly—I love every single bit of it.
                 </p>
 
-                <p className="font-romantic text-lg md:text-xl text-stone-700 leading-relaxed">
-                   I wanted to ask you this in a special way because you deserve nothing but the best. Thank you for being my valentine.
+                <p className="font-romantic text-lg leading-relaxed text-stone-700 md:text-xl">
+                  I wanted to ask you this in a special way because you deserve nothing but the best. Thank you for being my valentine.
                 </p>
               </div>
 
-              <div className="mt-6 pt-5 border-t border-stone-200">
-                <p className="font-romantic font-bold text-2xl md:text-4xl text-stone-900">
+              <div className="mt-8 border-t border-stone-200 pt-6">
+                <p className="font-romantic text-2xl font-bold text-stone-900 md:text-4xl">
                   I love you, forever.
                 </p>
-                <p className="font-sans text-xs uppercase tracking-widest text-stone-500 mt-2">
+                <p className="mt-2 font-sans text-xs uppercase tracking-widest text-stone-500">
                   - Your Valentine
                 </p>
               </div>
-           </div>
+            </div>
+          </motion.div>
         </motion.div>
 
-        {/* Envelope shell - on top of the letter, hides it */}
-        <motion.div
-           style={{ y: envelopeBodyY, opacity: envelopeBodyOpacity }}
-           className="absolute inset-0 z-[10]"
-        >
-          {/* Envelope Back */}
-          <div className="absolute inset-0 bg-[#d6c4b0] rounded-md shadow-inner" />
-          
-          {/* Back flap triangle */}
-          <div 
-            className="absolute left-0 right-0 bg-[#cbb8a4] z-[1]" 
-            style={{ top: 0, height: "55%", clipPath: "polygon(0% 0%, 50% 100%, 100% 0%)" }} 
+        {/* Envelope front pocket + flap */}
+        <motion.div style={{ y: envelopeShellY, translateZ: envelopeFrontZ }} className="absolute inset-0">
+          <div className="absolute inset-0 rounded-md border border-[#d6c4b0]" />
+          <div className="absolute bottom-0 left-0 top-0 w-[14px] bg-[#d9c8b5]" />
+          <div className="absolute bottom-0 right-0 top-0 w-[14px] bg-[#d9c8b5]" />
+          <div
+            className="absolute left-0 right-0 top-0 bg-[#e3d1be]"
+            style={{ height: "56%", clipPath: "polygon(0% 0%, 50% 100%, 100% 0%)" }}
           />
+          <div className="absolute left-0 right-0 bottom-0 top-[56%] rounded-b-md bg-[#eaddcf]" />
 
-          {/* Envelope Front Face */}
-          <div 
-            className="absolute bottom-0 left-0 right-0 bg-[#eaddcf] border border-[#d6c4b0] rounded-b-md z-[5]" 
-            style={{ height: "100%" }}
-          />
-
-          {/* Front decorative V shape */}
-          <div 
-            className="absolute left-0 right-0 top-0 bg-[#e3d1be] z-[6]" 
-            style={{ height: "60%", clipPath: "polygon(0% 0%, 50% 100%, 100% 0%)" }} 
-          />
-
-          {/* Top Flap (opens upward) */}
+          {/* Top flap (opens upward) */}
           <motion.div
-            style={{ rotateX: flapRotate }}
-            className="absolute top-0 left-0 right-0 origin-top z-[8]"
+            style={{ rotateX: flapRotate, opacity: flapOpacity, backfaceVisibility: "hidden" }}
+            className="absolute left-0 right-0 top-0 origin-top z-[20]"
           >
-            <div 
-              className="w-full bg-[#eaddcf] shadow-md border border-[#d6c4b0]" 
+            <div
+              className="relative w-full border border-[#d6c4b0] bg-[#eaddcf] shadow-md"
               style={{ height: "140px", clipPath: "polygon(0% 0%, 50% 100%, 100% 0%)" }}
             >
-               <div className="absolute top-[85px] left-1/2 -translate-x-1/2 w-12 h-12 bg-red-800 rounded-full shadow-lg flex items-center justify-center border-4 border-red-900/50">
-                  <Heart size={20} className="text-red-200" fill="currentColor" />
-               </div>
+              <div className="absolute left-1/2 top-[85px] h-12 w-12 -translate-x-1/2 rounded-full border-4 border-red-900/50 bg-red-800 shadow-lg flex items-center justify-center">
+                <Heart size={20} className="text-red-200" fill="currentColor" />
+              </div>
             </div>
           </motion.div>
         </motion.div>
