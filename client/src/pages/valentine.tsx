@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Heart } from "lucide-react";
 
 // Assets
@@ -8,8 +8,10 @@ import angryPuppy from "@assets/2-angry-dog_1770876596575.gif";
 import beggingPuppy from "@assets/3-puppy-please_1770876596575.webp";
 import couplePhoto from "/couple-placeholder.jpg"; 
 
-// Using the attached asset for the background
+// Floral Assets
 import floralBg from "@assets/1c1e1934764a7859c7d06dd90ee9fd5e_1770876135345.jpg";
+import floralPillar from "@assets/4d9d69e962e67a2c00cd2d0607a1febe_1770876135346.jpg";
+import floralCurtain from "@assets/98f184af72373b88f434d5e0d994c8f2_1770876135346.jpg";
 
 type GameState = "INITIAL" | "REJECT_1" | "REJECT_2" | "SUCCESS";
 
@@ -157,24 +159,53 @@ export default function ValentinePage() {
 }
 
 function SuccessView({ couplePhoto, onReplay, bgImage }: { couplePhoto: string, onReplay: () => void, bgImage: string }) {
+  const { scrollYProgress } = useScroll();
+  const leftX = useTransform(scrollYProgress, [0, 0.5], [0, -300]);
+  const rightX = useTransform(scrollYProgress, [0, 0.5], [0, 300]);
+  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0.3]);
+
   return (
     <div className="min-h-screen relative overflow-x-hidden font-romantic text-stone-800 bg-stone-50">
       {/* Background with overlay */}
       <div 
-        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-40 md:opacity-100"
+        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-20"
         style={{ backgroundImage: `url(${bgImage})` }}
       />
+      
+      {/* Animated Side Curtains */}
+      <motion.div 
+        style={{ x: leftX, opacity }}
+        className="fixed top-0 left-0 h-full w-1/3 z-20 pointer-events-none hidden md:block"
+      >
+        <img 
+          src={floralPillar} 
+          alt="Floral decoration left" 
+          className="h-full w-full object-cover object-right"
+        />
+      </motion.div>
+      
+      <motion.div 
+        style={{ x: rightX, opacity }}
+        className="fixed top-0 right-0 h-full w-1/3 z-20 pointer-events-none hidden md:block"
+      >
+         <img 
+          src={floralCurtain} 
+          alt="Floral decoration right" 
+          className="h-full w-full object-cover object-left scale-x-[-1]"
+        />
+      </motion.div>
+
       {/* Gradient overlay to ensure text readability */}
       <div className="fixed inset-0 z-0 bg-gradient-to-b from-white/90 via-white/80 to-white/90 backdrop-blur-[1px]" />
 
-      <div className="relative z-10 max-w-3xl mx-auto px-6 py-24 flex flex-col items-center">
+      <div className="relative z-30 max-w-3xl mx-auto px-6 py-32 flex flex-col items-center">
         
         {/* Header Section */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="text-center mb-16"
+          className="text-center mb-32 relative z-40"
         >
           <h1 className="text-6xl md:text-8xl font-medium text-stone-900 mb-6 tracking-tighter drop-shadow-sm" data-testid="title-success">
             She said Yes!
@@ -187,8 +218,9 @@ function SuccessView({ couplePhoto, onReplay, bgImage }: { couplePhoto: string, 
         {/* Photo Frame */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3, duration: 1 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1, duration: 1 }}
           className="relative w-full aspect-[3/4] md:aspect-[4/5] max-w-md mb-24 bg-white p-3 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rotate-1"
         >
           <img 
