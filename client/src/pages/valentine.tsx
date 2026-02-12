@@ -306,8 +306,15 @@ function EnvelopeLetter({ scrollYProgress }: { scrollYProgress: any }) {
   const letterScale = useTransform(scrollYProgress, [0.85, 0.95], [1, 1.15]);
   const letterOpacity = useTransform(scrollYProgress, [0.85, 1.0], [1, 1]);
 
-  // Envelope fades out as letter takes center stage (0.8 - 0.9)
-  const envelopeContainerOpacity = useTransform(scrollYProgress, [0.8, 0.9], [1, 0]);
+  const envelopeStageY = useTransform(scrollYProgress, [0.4, 0.5], [600, 0]);
+  const envelopeShellY = useTransform(scrollYProgress, [0.82, 1.0], [0, 350]);
+  const envelopeBackZ = useTransform(scrollYProgress, [0.69, 0.7], [5, 1]);
+  const envelopeFrontZ = useTransform(scrollYProgress, [0.69, 0.7], [10, 1]);
+  const letterRevealClip = useTransform(scrollYProgress, [0.6, 0.85], [
+    "inset(0% 0% 0% 0%)",
+    "inset(-200% -50% -200% -50%)"
+  ]);
+  const letterLayerZ = useTransform(scrollYProgress, [0.69, 0.7], [3, 20]);
 
   return (
     <div className="relative w-full max-w-lg mx-auto">
@@ -376,7 +383,7 @@ function EnvelopeLetter({ scrollYProgress }: { scrollYProgress: any }) {
                 </p>
 
                 <p className="font-romantic text-base leading-relaxed text-stone-700 md:text-lg">
-                  I wanted to ask you this in a special way, because you deserve nothing but the best. Even though I can't be there in person with "real" flowers this time, I hope this little gift still reaches you with a big smile. Thank you for being my Valentine. 사랑한다 ❤️
+                  I wanted to ask you this in a special way, because you deserve nothing but the best. Even though I can&apos;t be there in person with {'"'}real{'"'} flowers this time, I hope this little gift still reaches you with a big smile. Thank you for being my Valentine. 사랑한다 ❤️
                 </p>
 
                 <p className="font-romantic text-sm italic leading-relaxed text-stone-500 md:text-base">
@@ -397,7 +404,7 @@ function EnvelopeLetter({ scrollYProgress }: { scrollYProgress: any }) {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </div>
         </motion.div>
 
         {/* Envelope front pocket + flap */}
