@@ -50,7 +50,7 @@ const GALLERY_PHOTOS = [
 
   // Top layer (Rendered last = Front)
   { src: photo1, rotate: -5, x: -18, y: -5, z: 2, scale: 1.1 },
-  { src: photo2, rotate: 3, x: 18, y: -10, z: 2, scale: 1.1 }, // Moved to front (last)
+  { src: photo2, rotate: 3, x: 28, y: 5, z: 2, scale: 0.85 }, // Made smaller, moved right & down
 ];
 
 export default function ValentinePage() {
