@@ -291,150 +291,107 @@ function SuccessView({ onReplay }: { onReplay: () => void }) {
 }
 
 function EnvelopeLetter({ scrollYProgress }: { scrollYProgress: any }) {
-  // Phase 1: Envelope enters from bottom (0.4 - 0.5)
-  const envelopeY = useTransform(scrollYProgress, [0.4, 0.5], [600, 0]);
+  const envelopeEnterY = useTransform(scrollYProgress, [0.4, 0.5], [500, 0]);
   const envelopeOpacity = useTransform(scrollYProgress, [0.4, 0.45], [0, 1]);
 
-  // Phase 2: Flap opens (0.5 - 0.6)
-  const flapRotate = useTransform(scrollYProgress, [0.5, 0.6], [0, -180]);
-  const flapOpacity = useTransform(scrollYProgress, [0.58, 0.62], [1, 0]);
+  const flapRotate = useTransform(scrollYProgress, [0.55, 0.65], [0, -180]);
 
-  // Phase 3: Letter slides up out of envelope (0.6 - 0.85)
-  const letterY = useTransform(scrollYProgress, [0.6, 0.85], [280, -200]);
+  const letterSlideY = useTransform(scrollYProgress, [0.65, 0.8], [0, -380]);
+  const letterOpacity = useTransform(scrollYProgress, [0.65, 0.7], [0, 1]);
 
-  // Phase 4: Letter expands to full readable size (0.85 - 1.0)
-  const letterScale = useTransform(scrollYProgress, [0.85, 0.95], [1, 1.15]);
-  const letterOpacity = useTransform(scrollYProgress, [0.85, 1.0], [1, 1]);
-
-  const envelopeStageY = useTransform(scrollYProgress, [0.4, 0.5], [600, 0]);
-  const envelopeShellY = useTransform(scrollYProgress, [0.82, 1.0], [0, 350]);
-  const envelopeBackZ = useTransform(scrollYProgress, [0.69, 0.7], [5, 1]);
-  const envelopeFrontZ = useTransform(scrollYProgress, [0.69, 0.7], [10, 1]);
-  const letterRevealClip = useTransform(scrollYProgress, [0.6, 0.85], [
-    "inset(0% 0% 0% 0%)",
-    "inset(-200% -50% -200% -50%)"
-  ]);
-  const letterLayerZ = useTransform(scrollYProgress, [0.69, 0.7], [3, 20]);
+  const envelopeFadeY = useTransform(scrollYProgress, [0.78, 0.9], [0, 300]);
+  const envelopeFadeOpacity = useTransform(scrollYProgress, [0.78, 0.9], [1, 0]);
 
   return (
-    <div className="relative w-full max-w-lg mx-auto">
+    <div className="relative w-full flex flex-col items-center">
 
+      {/* Letter - starts hidden behind envelope, slides up above it */}
       <motion.div
-        style={{ y: envelopeStageY, opacity: envelopeOpacity }}
-        className="relative w-[320px] md:w-[400px] h-[220px] md:h-[260px] mx-auto z-20"
+        style={{ y: letterSlideY, opacity: letterOpacity }}
+        className="relative z-10 w-[90vw] max-w-[380px] mx-auto"
       >
-        {/* Envelope back panel */}
-        <motion.div style={{ y: envelopeShellY, zIndex: envelopeBackZ }} className="absolute inset-0">
-          <div className="absolute inset-0 rounded-md border border-[#cebba7] bg-[#d6c4b0] shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_16px_34px_rgba(69,47,30,0.2)]" />
-          <div
-            className="absolute left-0 right-0 top-0 z-[2] bg-[#cbb8a4]"
-            style={{ height: "56%", clipPath: "polygon(0% 0%, 50% 100%, 100% 0%)" }}
-          />
-        </motion.div>
-
-        {/* Letter sheet: clipped to envelope bounds until final reveal */}
-        <motion.div className="absolute inset-0 overflow-visible" style={{ clipPath: letterRevealClip, zIndex: letterLayerZ }}>
-          <motion.div
-            style={{
-              rotateX: flapRotate,
-              opacity: flapOpacity,
-              transformStyle: "preserve-3d",
-              backfaceVisibility: "hidden"
-            }}
-            className="absolute left-0 right-0 top-0 origin-top"
-          >
-            <div
-              className="relative w-full border border-[#d6c4b0] bg-[#eaddcf] shadow-lg"
-              style={{ height: "180px", clipPath: "polygon(0% 0%, 50% 100%, 100% 0%)" }}
-            >
-              <div className="absolute left-1/2 top-[130px] h-14 w-14 -translate-x-1/2 rounded-full border-4 border-red-900/50 bg-red-800 shadow-xl flex items-center justify-center">
-                <Heart size={24} className="text-red-200" fill="currentColor" />
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-
-        {/* Letter - slides up and out */}
-        <motion.div
-          style={{
-            y: letterY,
-            scale: letterScale,
-            opacity: letterOpacity,
-          }}
-          className="absolute left-1/2 top-[40px] -translate-x-1/2 w-[460px] md:w-[580px] origin-bottom"
+        <div
+          className="rounded-md border border-[#eadfce] bg-gradient-to-b from-[#fffefb] via-[#fff9ef] to-[#f4e8d3] shadow-[0_16px_40px_rgba(84,63,41,0.25)] px-5 py-6 md:px-7 md:py-8"
+          data-testid="letter-content"
         >
-          <div
-            className="rounded-md border border-[#eadfce] bg-gradient-to-b from-[#fffefb] via-[#fff9ef] to-[#f4e8d3] shadow-[0_20px_50px_rgba(84,63,41,0.3)] px-6 py-7 md:px-8 md:py-9"
-            data-testid="letter-content"
-          >
-            <div className="flex w-full flex-col justify-between border border-[#e6dace] bg-[#fffaf1]/95 p-4 md:p-5" style={{ minHeight: "500px" }}>
-              <div className="space-y-4">
-                <div className="h-px w-full bg-gradient-to-r from-transparent via-[#c7b39f] to-transparent" />
-                <p className="border-b border-stone-200 pb-3 font-romantic text-2xl font-bold text-stone-800 md:text-3xl">
-                  To 우리 소중한 공주❤️,
-                </p>
+          <div className="w-full border border-[#e6dace] bg-[#fffaf1]/95 p-4">
+            <div className="space-y-3">
+              <div className="h-px w-full bg-gradient-to-r from-transparent via-[#c7b39f] to-transparent" />
+              <p className="border-b border-stone-200 pb-2 font-romantic text-xl font-bold text-stone-800 md:text-2xl">
+                To 우리 소중한 공주❤️,
+              </p>
 
-                <p className="font-romantic text-base leading-relaxed text-stone-700 md:text-lg">
-                  From the moment we met, you've bought so much joy & laughter into my simple life like someone suddenly turned the colors back on.
-                </p>
+              <p className="font-romantic text-sm leading-relaxed text-stone-700 md:text-base">
+                From the moment we met, you{"'"}ve bought so much joy & laughter into my simple life like someone suddenly turned the colors back on.
+              </p>
 
-                <p className="font-romantic text-base leading-relaxed text-stone-700 md:text-lg">
-                  I miss your smile, your laugh, and all the little moments in between. I wish I could see you again very soon so we can make even more fun & unforgettable memories, just like we did in Korea and Indonesia.
-                </p>
+              <p className="font-romantic text-sm leading-relaxed text-stone-700 md:text-base">
+                I miss your smile, your laugh, and all the little moments in between. I wish I could see you again very soon so we can make even more fun & unforgettable memories, just like we did in Korea and Indonesia.
+              </p>
 
-                <p className="font-romantic text-base leading-relaxed text-stone-700 md:text-lg">
-                  I wanted to ask you this in a special way, because you deserve nothing but the best. Even though I can&apos;t be there in person with {'"'}real{'"'} flowers this time, I hope this little gift still reaches you with a big smile. Thank you for being my Valentine. 사랑한다 ❤️
-                </p>
+              <p className="font-romantic text-sm leading-relaxed text-stone-700 md:text-base">
+                I wanted to ask you this in a special way, because you deserve nothing but the best. Even though I can{"'"}t be there in person with {'"'}real{'"'} flowers this time, I hope this little gift still reaches you with a big smile. Thank you for being my Valentine. 사랑한다 ❤️
+              </p>
 
-                <p className="font-romantic text-sm italic leading-relaxed text-stone-500 md:text-base">
-                  P.s. I made this late at night for days, right in front of you during our calls and powered by lots of love, good music, and questionable sleep decisions.
-                </p>
+              <p className="font-romantic text-xs italic leading-relaxed text-stone-500 md:text-sm">
+                P.s. I made this late at night for days, right in front of you during our calls and powered by lots of love, good music, and questionable sleep decisions.
+              </p>
 
-                <p className="font-romantic text-sm italic leading-relaxed text-stone-500 md:text-base">
-                  Special shoutout to Replit, Claude code, and ChatGPT. LMAO they really carried my ass🤓
-                </p>
-              </div>
+              <p className="font-romantic text-xs italic leading-relaxed text-stone-500 md:text-sm">
+                Special shoutout to Replit, Claude code, and ChatGPT. LMAO they really carried my ass🤓
+              </p>
+            </div>
 
-              <div className="mt-4 border-t border-stone-200 pt-4">
-                <p className="font-romantic text-base text-stone-700 md:text-lg">
-                  Your one & only smarty pants,
-                </p>
-                <p className="mt-1 font-romantic text-2xl font-bold text-stone-900 md:text-3xl">
-                  Kwakteria
-                </p>
-              </div>
+            <div className="mt-3 border-t border-stone-200 pt-3">
+              <p className="font-romantic text-sm text-stone-700 md:text-base">
+                Your one & only smarty pants,
+              </p>
+              <p className="mt-1 font-romantic text-xl font-bold text-stone-900 md:text-2xl">
+                Kwakteria
+              </p>
             </div>
           </div>
-        </motion.div>
+        </div>
+      </motion.div>
 
-        {/* Envelope front pocket + flap */}
-        <motion.div style={{ y: envelopeShellY, zIndex: envelopeFrontZ, perspective: "1000px" }} className="absolute inset-0">
-          <div className="absolute inset-0 rounded-md border border-[#d6c4b0]" />
-          <div className="absolute bottom-0 left-0 top-0 w-[14px] bg-[#d9c8b5]" />
-          <div className="absolute bottom-0 right-0 top-0 w-[14px] bg-[#d9c8b5]" />
+      {/* Envelope - sits below the letter, fades out as letter rises */}
+      <motion.div
+        style={{ y: envelopeEnterY, opacity: envelopeOpacity }}
+        className="relative z-20 -mt-4 w-[90vw] max-w-[380px] mx-auto"
+      >
+        <motion.div
+          style={{ y: envelopeFadeY, opacity: envelopeFadeOpacity }}
+          className="relative w-full h-[200px] md:h-[230px]"
+        >
+          {/* Envelope body */}
+          <div className="absolute inset-0 rounded-md bg-[#eaddcf] border border-[#d6c4b0] shadow-lg" />
+
+          {/* Inner V crease */}
           <div
             className="absolute left-0 right-0 top-0 bg-[#e3d1be]"
-            style={{ height: "56%", clipPath: "polygon(0% 0%, 50% 100%, 100% 0%)" }}
+            style={{ height: "55%", clipPath: "polygon(0% 0%, 50% 100%, 100% 0%)" }}
           />
-          <div className="absolute left-0 right-0 bottom-0 top-[56%] rounded-b-md bg-[#eaddcf]" />
 
-          {/* Top flap (opens upward) */}
+          {/* Bottom half overlay */}
+          <div className="absolute left-0 right-0 bottom-0 top-[45%] rounded-b-md bg-[#eaddcf]" />
+
+          {/* Top flap */}
           <motion.div
-            style={{ rotateX: flapRotate, opacity: flapOpacity, backfaceVisibility: "hidden" }}
-            className="absolute left-0 right-0 top-0 origin-top z-[20]"
+            style={{ rotateX: flapRotate, perspective: "800px" }}
+            className="absolute left-0 right-0 top-0 origin-top z-[5]"
           >
             <div
-              className="relative w-full border border-[#d6c4b0] bg-[#eaddcf] shadow-md"
-              style={{ height: "140px", clipPath: "polygon(0% 0%, 50% 100%, 100% 0%)" }}
+              className="relative w-full bg-[#eaddcf] border border-[#d6c4b0] shadow-md"
+              style={{ height: "120px", clipPath: "polygon(0% 0%, 50% 100%, 100% 0%)" }}
             >
-              <div className="absolute left-1/2 top-[85px] h-12 w-12 -translate-x-1/2 rounded-full border-4 border-red-900/50 bg-red-800 shadow-lg flex items-center justify-center">
-                <Heart size={20} className="text-red-200" fill="currentColor" />
+              <div className="absolute left-1/2 top-[70px] h-11 w-11 -translate-x-1/2 rounded-full border-[3px] border-red-900/50 bg-red-800 shadow-lg flex items-center justify-center">
+                <Heart size={18} className="text-red-200" fill="currentColor" />
               </div>
             </div>
           </motion.div>
         </motion.div>
-
       </motion.div>
+
     </div>
   );
 }
