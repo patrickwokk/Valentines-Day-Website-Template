@@ -37,7 +37,8 @@ const GALLERY_PHOTOS = [
   // Middle layer
   { src: photo3, rotate: -2, x: -38, y: 15, z: 1, scale: 1 },
   { src: photo4, rotate: 6, x: 38, y: 10, z: 1, scale: 1 },
-  { src: photo5, rotate: -4, x: -8, y: -25, z: 1, scale: 1 },
+  // photo5 -> Moved to Top Left Corner (Safe Zone)
+  { src: photo5, rotate: -4, x: -35, y: -45, z: 1, scale: 1 },
   { src: photo6, rotate: 2, x: 10, y: 40, z: 1, scale: 1 },
   
   // New photos - Tucked in but visible
