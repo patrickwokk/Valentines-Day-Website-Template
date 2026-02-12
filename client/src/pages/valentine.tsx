@@ -30,25 +30,25 @@ type GameState = "INITIAL" | "REJECT_1" | "REJECT_2" | "SUCCESS";
 
 const GALLERY_PHOTOS = [
   // Top layer (closest/fastest) - Slightly scattered center
-  { src: photo1, rotate: -5, x: -18, y: -12, z: 2, scale: 1.1 },
-  { src: photo2, rotate: 3, x: 18, y: -18, z: 2, scale: 1.1 },
+  { src: photo1, rotate: -5, x: -18, y: -5, z: 2, scale: 1.1 }, // Moved down
+  { src: photo2, rotate: 3, x: 18, y: -10, z: 2, scale: 1.1 }, // Moved down
   
   // Middle layer - Spreading out a bit more to avoid covering faces
-  { src: photo3, rotate: -2, x: -38, y: 12, z: 1, scale: 1 },
-  { src: photo4, rotate: 6, x: 38, y: 8, z: 1, scale: 1 },
-  { src: photo5, rotate: -4, x: -8, y: -38, z: 1, scale: 1 },
-  { src: photo6, rotate: 2, x: 10, y: 38, z: 1, scale: 1 },
+  { src: photo3, rotate: -2, x: -38, y: 15, z: 1, scale: 1 },
+  { src: photo4, rotate: 6, x: 38, y: 10, z: 1, scale: 1 },
+  { src: photo5, rotate: -4, x: -8, y: -25, z: 1, scale: 1 }, // Moved down
+  { src: photo6, rotate: 2, x: 10, y: 40, z: 1, scale: 1 },
   
   // Background/Edges layer - Framing further out
-  { src: photo7, rotate: -6, x: -42, y: -8, z: 0, scale: 0.9 },
-  { src: photo8, rotate: 4, x: 42, y: 22, z: 0, scale: 0.9 },
-  { src: photo9, rotate: -3, x: -18, y: 30, z: 0, scale: 0.9 },
+  { src: photo7, rotate: -6, x: -42, y: -2, z: 0, scale: 0.9 }, // Moved down
+  { src: photo8, rotate: 4, x: 42, y: 25, z: 0, scale: 0.9 },
+  { src: photo9, rotate: -3, x: -18, y: 35, z: 0, scale: 0.9 },
   
   // New photos - Tucked in but visible
-  { src: photo10, rotate: 5, x: 22, y: -32, z: 1, scale: 1 },
-  { src: photo11, rotate: -4, x: -28, y: 48, z: 2, scale: 1.1 },
-  { src: photo12, rotate: 2, x: 32, y: 42, z: 0, scale: 0.9 },
-  { src: photo13, rotate: -2, x: 0, y: -48, z: 1, scale: 1 },
+  { src: photo10, rotate: 5, x: 22, y: -28, z: 1, scale: 1 }, // Moved down
+  { src: photo11, rotate: -4, x: -28, y: 50, z: 2, scale: 1.1 },
+  { src: photo12, rotate: 2, x: 32, y: 45, z: 0, scale: 0.9 },
+  { src: photo13, rotate: -2, x: 0, y: -40, z: 1, scale: 1 }, // Moved down
 ];
 
 export default function ValentinePage() {
@@ -268,7 +268,7 @@ function SuccessView({ onReplay }: { onReplay: () => void }) {
         {/* Header - Disappears on scroll */}
         <motion.div 
           style={{ opacity: headerOpacity }}
-          className="absolute text-center top-[60%]" 
+          className="absolute text-center top-[60%] bg-white/40 backdrop-blur-sm p-8 rounded-3xl border border-white/30 shadow-lg" 
         >
           <div className="flex items-baseline justify-center gap-3 mb-4 flex-wrap">
              <motion.span 
