@@ -268,7 +268,7 @@ function SuccessView({ onReplay }: { onReplay: () => void }) {
         {/* Header - Disappears on scroll */}
         <motion.div 
           style={{ opacity: headerOpacity }}
-          className="absolute text-center bg-white/90 backdrop-blur-md p-10 rounded-2xl shadow-xl border border-stone-100 top-[75%]" 
+          className="absolute text-center bg-white/90 backdrop-blur-md p-10 rounded-2xl shadow-xl border border-stone-100 top-[60%]" 
         >
           <div className="flex items-baseline justify-center gap-3 mb-4 flex-wrap">
              <motion.span 
