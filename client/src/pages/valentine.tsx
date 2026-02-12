@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Heart } from "lucide-react";
+import { useLocation } from "wouter";
 
 // Assets
 import happyPuppy from "@assets/1-excited_1770876596574.gif";
@@ -56,6 +57,7 @@ const GALLERY_PHOTOS = [
 export default function ValentinePage() {
   const [gameState, setGameState] = useState<GameState>("INITIAL");
   const [yesScale, setYesScale] = useState(1);
+  const [, setLocation] = useLocation();
 
   const handleNoClick = () => {
     if (gameState === "INITIAL") {
@@ -79,9 +81,7 @@ export default function ValentinePage() {
   };
 
   const handleReplay = () => {
-    setGameState("INITIAL");
-    setYesScale(1);
-    window.scrollTo(0, 0);
+    setLocation("/replay");
   };
 
   // Content configuration based on state
