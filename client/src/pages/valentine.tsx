@@ -264,96 +264,117 @@ function SuccessView({ onReplay }: { onReplay: () => void }) {
         </div>
       </div>
 
-      {/* Text Container - Messages scroll up like "Part of the polaroid flow" */}
-      <div className="fixed inset-0 pointer-events-none z-20 flex flex-col items-center justify-center p-6">
-        
-        {/* Header - Disappears on scroll */}
-        <motion.div 
-          style={{ opacity: headerOpacity }}
-          className="absolute text-center top-[60%] bg-white/40 backdrop-blur-sm p-8 rounded-3xl border border-white/30 shadow-lg" 
-        >
-          <div className="flex items-baseline justify-center gap-3 mb-4 flex-wrap">
-             <motion.span 
-              animate={{ scale: [1, 1.2, 1], rotate: [0, -5, 5, 0] }}
-              transition={{ duration: 0.8, repeat: Infinity, repeatDelay: 1 }}
-              className="text-6xl md:text-8xl font-bold text-stone-900 tracking-tighter inline-block"
-            >
-              Horray!
-            </motion.span>
-             <span className="text-4xl md:text-6xl font-medium text-stone-900 tracking-tight">
-               그럴 줄 알았어 !!
-            </span>
-          </div>
-          
-          <p className="text-xl md:text-2xl italic text-stone-600 font-light mt-4">
-            scroll down 주세요~
-          </p>
-        </motion.div>
+      {/* Envelope & Letter System */}
+      <div className="fixed inset-0 pointer-events-none z-30 flex items-center justify-center">
+        <EnvelopeLetter scrollYProgress={scrollYProgress} />
+      </div>
 
-        {/* Message 1 */}
-        <motion.div 
-          style={{ opacity: t1Op, y: t1Y }} 
-          className="absolute max-w-2xl text-center z-30"
+      {/* Replay Button - Only active at end */}
+      <motion.div style={{ opacity: buttonOpacity }} className="fixed bottom-10 left-1/2 -translate-x-1/2 pointer-events-auto z-50">
+          <button
+          onClick={onReplay}
+          className="px-10 py-4 bg-stone-900 text-white font-sans text-xs tracking-[0.2em] uppercase hover:bg-stone-700 transition-colors shadow-lg rounded-sm"
         >
-           <div className="bg-white p-6 pb-12 shadow-xl rotate-[-2deg] transform transition-transform hover:scale-105 border-8 border-white">
-             <p className="text-3xl md:text-4xl text-stone-900 leading-relaxed font-romantic font-bold">
-              "Dearest Ga-eun,<br/>
-              From the moment we met, you've brought so much joy into my life."
-            </p>
+          Replay Our Story
+        </button>
+      </motion.div>
+
+    </div>
+  );
+}
+
+function EnvelopeLetter({ scrollYProgress }: { scrollYProgress: any }) {
+  // Animation Timelines
+  
+  // 1. Flap opening (0.0 - 0.2)
+  const flapRotate = useTransform(scrollYProgress, [0, 0.2], [0, 180]);
+  const flapZIndex = useTransform(scrollYProgress, [0, 0.1, 0.11], [4, 4, 1]); // Flap goes behind letter once open
+
+  // 2. Letter sliding out (0.2 - 0.5)
+  // Moves from inside envelope (y=0) to fully out (y=-300ish)
+  // We'll also scale it up slightly as it comes out for readability
+  const letterY = useTransform(scrollYProgress, [0.2, 0.6], [100, -350]);
+  const letterScale = useTransform(scrollYProgress, [0.2, 0.6], [0.9, 1.1]);
+  
+  // 3. Envelope fading/moving down (optional, to clear focus for letter) (0.5 - 0.8)
+  const envelopeY = useTransform(scrollYProgress, [0.4, 0.8], [0, 400]);
+  const envelopeOpacity = useTransform(scrollYProgress, [0.6, 0.9], [1, 0]);
+
+  // 4. Letter Paper Unfolding/Reading Mode
+  // It starts compact, maybe expands? For now, sliding out straight is classic.
+
+  return (
+    <div className="relative w-full max-w-lg mx-auto perspective-1000">
+      
+      {/* The Entire Envelope Container */}
+      <motion.div 
+        style={{ y: envelopeY, opacity: envelopeOpacity }}
+        className="relative w-[320px] md:w-[400px] h-[240px] md:h-[300px] mx-auto bg-[#eaddcf] shadow-2xl rounded-lg z-20"
+      >
+        {/* Envelope Body (Back) */}
+        <div className="absolute inset-0 bg-[#eaddcf] rounded-lg shadow-inner border border-[#d6c4b0]" />
+
+        {/* The Letter Itself */}
+        <motion.div
+          style={{ 
+            y: letterY,
+            scale: letterScale,
+          }}
+          className="absolute left-4 right-4 top-2 bg-[#fffbf0] shadow-md p-6 md:p-8 text-center flex flex-col items-center justify-start h-[450px] md:h-[550px] origin-bottom z-10 rounded-sm"
+        >
+           {/* Paper Texture/Lines */}
+           <div className="w-full h-full border-2 border-double border-[#e6dace] p-4 flex flex-col justify-between">
+              
+              <div className="space-y-6">
+                <p className="font-romantic font-bold text-2xl md:text-3xl text-stone-800 border-b border-stone-200 pb-4">
+                  Dearest Ga-eun,
+                </p>
+                
+                <p className="font-romantic text-lg md:text-xl text-stone-700 leading-relaxed">
+                  From the moment we met, you've brought so much joy into my life. Your smile, your laugh, and even the way you look at me when I'm being silly—I love every single bit of it.
+                </p>
+
+                <p className="font-romantic text-lg md:text-xl text-stone-700 leading-relaxed">
+                   I wanted to ask you this in a special way because you deserve nothing but the best. Thank you for being my valentine.
+                </p>
+              </div>
+
+              <div className="mt-8 pt-6 border-t border-stone-200">
+                <p className="font-romantic font-bold text-2xl md:text-4xl text-stone-900">
+                  I love you, forever.
+                </p>
+                <p className="font-sans text-xs uppercase tracking-widest text-stone-500 mt-2">
+                  - Your Valentine
+                </p>
+              </div>
            </div>
         </motion.div>
 
-        {/* Message 2 */}
-        <motion.div 
-          style={{ opacity: t2Op, y: t2Y }} 
-          className="absolute max-w-2xl text-center z-30"
+        {/* Envelope Front Pockets (The triangles) */}
+        {/* Left Flap */}
+        <div className="absolute left-0 bottom-0 w-0 h-0 border-l-[160px] md:border-l-[200px] border-b-[120px] md:border-b-[150px] border-l-transparent border-b-[#e3d1be] border-r-0 rounded-bl-lg z-30" />
+        {/* Right Flap */}
+        <div className="absolute right-0 bottom-0 w-0 h-0 border-r-[160px] md:border-r-[200px] border-b-[120px] md:border-b-[150px] border-r-transparent border-b-[#e3d1be] border-l-0 rounded-br-lg z-30" />
+        {/* Bottom Flap (Covering the middle) */}
+        <div className="absolute bottom-0 left-0 right-0 h-[130px] md:h-[160px] bg-[#dfcdba] clip-path-triangle z-30 shadow-sm" style={{ clipPath: "polygon(0% 100%, 50% 0%, 100% 100%)" }} />
+
+        {/* Top Flap (The one that opens) */}
+        <motion.div
+          style={{ 
+            rotateX: flapRotate,
+            zIndex: flapZIndex
+          }}
+          className="absolute top-0 left-0 right-0 h-[130px] md:h-[160px] origin-top z-40"
         >
-          <div className="bg-white p-6 pb-12 shadow-xl rotate-[1deg] transform transition-transform hover:scale-105 border-8 border-white">
-            <p className="text-3xl md:text-4xl text-stone-900 leading-relaxed font-romantic font-bold">
-              "Your smile, your laugh, and even the way you look at me when I'm being silly—I love every single bit of it."
-            </p>
+          <div className="w-full h-full bg-[#eaddcf] shadow-md border-t border-[#d6c4b0]" style={{ clipPath: "polygon(0% 0%, 50% 100%, 100% 0%)" }}>
+            {/* Wax Seal */}
+             <div className="absolute top-[80px] md:top-[100px] left-1/2 -translate-x-1/2 w-12 h-12 bg-red-800 rounded-full shadow-lg flex items-center justify-center border-4 border-red-900/50">
+                <Heart size={20} className="text-red-200" fill="currentColor" />
+             </div>
           </div>
         </motion.div>
 
-        {/* Message 3 */}
-        <motion.div 
-          style={{ opacity: t3Op, y: t3Y }} 
-          className="absolute max-w-2xl text-center z-30"
-        >
-          <div className="bg-white p-6 pb-12 shadow-xl rotate-[-1deg] transform transition-transform hover:scale-105 border-8 border-white">
-            <p className="text-3xl md:text-4xl text-stone-900 leading-relaxed font-romantic font-bold">
-              "I wanted to ask you this in a special way because you deserve nothing but the best. Thank you for being my valentine."
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Final Message */}
-        <motion.div 
-          style={{ opacity: t4Op, y: t4Y }} 
-          className="absolute max-w-2xl text-center flex flex-col items-center z-30"
-        >
-          <div className="bg-white p-8 pb-16 shadow-2xl rotate-[2deg] border-8 border-white mb-8">
-            <p className="text-5xl md:text-7xl text-stone-900 font-bold mb-4 font-romantic">
-              "I love you, forever."
-            </p>
-            <p className="text-3xl text-stone-600 italic">
-              - Your Valentine
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Replay Button - Only active at end */}
-        <motion.div style={{ opacity: buttonOpacity }} className="absolute bottom-20 pointer-events-auto z-40">
-           <button
-            onClick={onReplay}
-            className="px-10 py-4 bg-stone-900 text-white font-sans text-xs tracking-[0.2em] uppercase hover:bg-stone-700 transition-colors shadow-lg rounded-sm"
-          >
-            Replay Our Story
-          </button>
-        </motion.div>
-
-      </div>
-
+      </motion.div>
     </div>
   );
 }
