@@ -248,10 +248,14 @@ function SuccessView({ onReplay }: { onReplay: () => void }) {
           style={{ opacity: headerOpacity }}
           className="absolute text-center bg-white/90 backdrop-blur-md p-10 rounded-2xl shadow-xl border border-stone-100 top-[60%]" // Moved down
         >
-          <h1 className="text-5xl md:text-7xl font-medium text-stone-900 mb-4 tracking-tighter">
+          <motion.h1 
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="text-5xl md:text-7xl font-medium text-stone-900 mb-4 tracking-tighter"
+          >
             Horray! 그럴 줄 알았어 !!
-          </h1>
-          <p className="text-xl md:text-2xl italic text-stone-600 font-light animate-bounce mt-4">
+          </motion.h1>
+          <p className="text-xl md:text-2xl italic text-stone-600 font-light mt-4">
             scroll down 주세요~
           </p>
         </motion.div>
