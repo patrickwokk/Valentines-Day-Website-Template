@@ -37,7 +37,6 @@ const GALLERY_PHOTOS = [
   // Middle layer
   { src: photo3, rotate: -2, x: -38, y: 15, z: 1, scale: 1 },
   { src: photo4, rotate: 6, x: 38, y: 10, z: 1, scale: 1 },
-  { src: photo5, rotate: -4, x: -8, y: -25, z: 1, scale: 1 },
   { src: photo6, rotate: 2, x: 10, y: 40, z: 1, scale: 1 },
   
   // New photos - Tucked in but visible
@@ -51,6 +50,7 @@ const GALLERY_PHOTOS = [
   // Top layer (Rendered last = Front)
   { src: photo1, rotate: -5, x: -18, y: -5, z: 2, scale: 1.1 },
   { src: photo2, rotate: 3, x: 22, y: 0, z: 2, scale: 0.85 }, // Made smaller, moved towards center
+  { src: photo5, rotate: -4, x: -8, y: -25, z: 2, scale: 1 }, // Moved to front
 ];
 
 export default function ValentinePage() {
