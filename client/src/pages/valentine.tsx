@@ -211,25 +211,6 @@ function SuccessView({ onReplay }: { onReplay: () => void }) {
     };
   });
 
-  // Text Animations - Moving up alongside photos but visible longer
-  // We want them to "scroll" up naturally like a credits roll but with parallax
-  const textSpeed = -600; 
-  
-  // Staggered start positions for text chunks
-  // They start "below" the fold and scroll UP into view and then out
-  const t1Y = useTransform(scrollYProgress, [0.1, 0.4], [300, -300]);
-  const t1Op = useTransform(scrollYProgress, [0.1, 0.2, 0.3, 0.4], [0, 1, 1, 0]);
-
-  const t2Y = useTransform(scrollYProgress, [0.3, 0.6], [300, -300]);
-  const t2Op = useTransform(scrollYProgress, [0.3, 0.4, 0.5, 0.6], [0, 1, 1, 0]);
-
-  const t3Y = useTransform(scrollYProgress, [0.5, 0.8], [300, -300]);
-  const t3Op = useTransform(scrollYProgress, [0.5, 0.6, 0.7, 0.8], [0, 1, 1, 0]);
-
-  const t4Y = useTransform(scrollYProgress, [0.7, 1.0], [300, 0]); // Ends at center
-  const t4Op = useTransform(scrollYProgress, [0.7, 0.8], [0, 1]);
-
-  const buttonOpacity = useTransform(scrollYProgress, [0.9, 1], [0, 1]);
   const headerOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]); 
 
   return (
