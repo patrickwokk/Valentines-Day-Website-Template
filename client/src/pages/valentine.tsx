@@ -45,8 +45,8 @@ const GALLERY_PHOTOS = [
   { src: photo10, rotate: 5, x: 45, y: -45, z: 1, scale: 1 }, 
   { src: photo11, rotate: -4, x: -28, y: 50, z: 2, scale: 1.1 },
   { src: photo12, rotate: 2, x: 32, y: 45, z: 0, scale: 0.9 },
-  // photo13 -> Top Left Corner
-  { src: photo13, rotate: -2, x: -45, y: -45, z: 1, scale: 1 }, 
+  // photo13 -> Moved between photo5 (-8, -25) and photo10 (45, -45)
+  { src: photo13, rotate: -2, x: 18, y: -38, z: 1, scale: 1 }, 
 
   // Top layer (Rendered last = Front)
   { src: photo1, rotate: -5, x: -18, y: -5, z: 2, scale: 1.1 },
