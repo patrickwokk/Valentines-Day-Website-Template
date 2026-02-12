@@ -6,14 +6,38 @@ import { Heart } from "lucide-react";
 import happyPuppy from "@assets/1-excited_1770876596574.gif";
 import angryPuppy from "@assets/2-angry-dog_1770876596575.gif";
 import beggingPuppy from "@assets/3-puppy-please_1770876596575.webp";
-import couplePhoto from "/couple-placeholder.jpg"; 
 
-// Floral Assets
+// Photo Assets
+import photo1 from "@assets/BD8BBA69-E650-4124-BBAC-618ABB29E997_1_102_o_1770877002215.jpeg";
+import photo2 from "@assets/9969E619-B449-453C-91D5-3174D487D6EC_4_5005_c_1770877019708.jpeg";
+import photo3 from "@assets/C12B98ED-9F98-4521-9C97-C924930B551E_1_102_o_1770877061969.jpeg";
+import photo4 from "@assets/911D2329-F027-4F57-BD4D-2316528C43EA_1_102_o_1770877101880.jpeg";
+import photo5 from "@assets/B3E5E6DC-DAC9-42C2-A183-36D5C892E809_4_5005_c_1770877139538.jpeg";
+import photo6 from "@assets/D148961A-5E38-4097-8193-DA843BB530FB_1_105_c_1770877169930.jpeg";
+import photo7 from "@assets/ACF6D9EB-768F-4858-ADD1-F2426FE4DACA_1_105_c_1770877180380.jpeg";
+import photo8 from "@assets/2ABA7306-3DAF-4367-A6D0-590DB4EF9145_1_105_c_1770877209211.jpeg";
+import photo9 from "@assets/8F1AEA78-F103-4E27-A784-8640A453772A_4_5005_c_1770877217445.jpeg";
+import photo10 from "@assets/937658B5-ED2D-4D85-92DF-44A27B809F8C_1_102_o_1770877231936.jpeg";
+import photo11 from "@assets/5C1DD69B-F575-4053-A9E2-8AF8D85BC7A8_1_102_o_1770877239395.jpeg";
+
+// Floral Assets (Keeping for subtle background texture if needed, or removing if fully replaced)
 import floralBg from "@assets/1c1e1934764a7859c7d06dd90ee9fd5e_1770876135345.jpg";
-import floralPillar from "@assets/4d9d69e962e67a2c00cd2d0607a1febe_1770876135346.jpg";
-import floralCurtain from "@assets/98f184af72373b88f434d5e0d994c8f2_1770876135346.jpg";
 
 type GameState = "INITIAL" | "REJECT_1" | "REJECT_2" | "SUCCESS";
+
+const GALLERY_PHOTOS = [
+  { src: photo1, rotate: -5, x: -10, y: 0 },
+  { src: photo2, rotate: 3, x: 15, y: -20 },
+  { src: photo3, rotate: -2, x: -20, y: 10 },
+  { src: photo4, rotate: 6, x: 25, y: 15 },
+  { src: photo5, rotate: -4, x: -15, y: -10 },
+  { src: photo6, rotate: 2, x: 10, y: 20 },
+  { src: photo7, rotate: -6, x: -25, y: -5 },
+  { src: photo8, rotate: 4, x: 20, y: 5 },
+  { src: photo9, rotate: -3, x: -5, y: -15 },
+  { src: photo10, rotate: 5, x: 30, y: -25 },
+  { src: photo11, rotate: -1, x: 0, y: 25 },
+];
 
 export default function ValentinePage() {
   const [gameState, setGameState] = useState<GameState>("INITIAL");
@@ -75,7 +99,7 @@ export default function ValentinePage() {
         };
       case "SUCCESS":
         return {
-          image: couplePhoto,
+          image: photo1, // Use one of the photos as a placeholder if needed, though we don't use it in the new view
           text: "",
           yesText: "",
           noText: "",
@@ -89,9 +113,7 @@ export default function ValentinePage() {
   if (gameState === "SUCCESS") {
     return (
       <SuccessView 
-        couplePhoto={content.image} 
         onReplay={handleReplay} 
-        bgImage={floralBg}
       />
     );
   }
@@ -158,122 +180,123 @@ export default function ValentinePage() {
   );
 }
 
-function SuccessView({ couplePhoto, onReplay, bgImage }: { couplePhoto: string, onReplay: () => void, bgImage: string }) {
+function SuccessView({ onReplay }: { onReplay: () => void }) {
   const { scrollYProgress } = useScroll();
-  const leftX = useTransform(scrollYProgress, [0, 0.5], [0, -300]);
-  const rightX = useTransform(scrollYProgress, [0, 0.5], [0, 300]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0.3]);
+  
+  // Create staggered animations for the photos based on scroll
+  // We want them to start scattered, then "scoot" to the sides as we scroll down
+  const photoAnims = GALLERY_PHOTOS.map((_, i) => {
+    // Alternate moving left and right
+    const direction = i % 2 === 0 ? -1 : 1;
+    // Calculate a random but deterministic movement amount
+    const moveX = (300 + Math.random() * 200) * direction;
+    
+    return {
+      x: useTransform(scrollYProgress, [0, 0.2], [0, moveX]),
+      opacity: useTransform(scrollYProgress, [0, 0.3], [1, 0.2]),
+      scale: useTransform(scrollYProgress, [0, 0.2], [1, 0.8]),
+    };
+  });
+
+  // Opacity controls for text sections
+  const textOpacity1 = useTransform(scrollYProgress, [0.15, 0.25], [0, 1]);
+  const textOpacity2 = useTransform(scrollYProgress, [0.3, 0.4], [0, 1]);
+  const textOpacity3 = useTransform(scrollYProgress, [0.45, 0.55], [0, 1]);
+  const textOpacity4 = useTransform(scrollYProgress, [0.6, 0.7], [0, 1]);
+  const buttonOpacity = useTransform(scrollYProgress, [0.8, 0.9], [0, 1]);
 
   return (
-    <div className="min-h-screen relative overflow-x-hidden font-romantic text-stone-800 bg-stone-50">
-      {/* Background with overlay */}
-      <div 
-        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-20"
-        style={{ backgroundImage: `url(${bgImage})` }}
-      />
+    <div className="min-h-[300vh] relative bg-stone-50 overflow-x-hidden font-romantic">
       
-      {/* Animated Side Curtains */}
-      <motion.div 
-        style={{ x: leftX, opacity }}
-        className="fixed top-0 left-0 h-full w-1/3 z-20 pointer-events-none hidden md:block"
-      >
-        <img 
-          src={floralPillar} 
-          alt="Floral decoration left" 
-          className="h-full w-full object-cover object-right"
-        />
-      </motion.div>
-      
-      <motion.div 
-        style={{ x: rightX, opacity }}
-        className="fixed top-0 right-0 h-full w-1/3 z-20 pointer-events-none hidden md:block"
-      >
-         <img 
-          src={floralCurtain} 
-          alt="Floral decoration right" 
-          className="h-full w-full object-cover object-left scale-x-[-1]"
-        />
-      </motion.div>
+      {/* Sticky container for the photos to stay fixed while we scroll "through" them */}
+      <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center overflow-hidden">
+        <div className="relative w-full h-full max-w-6xl mx-auto">
+          {GALLERY_PHOTOS.map((photo, i) => (
+            <motion.div
+              key={i}
+              style={{
+                x: photoAnims[i].x,
+                opacity: photoAnims[i].opacity,
+                scale: photoAnims[i].scale,
+                rotate: photo.rotate,
+                left: `${50 + photo.x}%`,
+                top: `${40 + photo.y}%`,
+              }}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.1, duration: 0.8, type: "spring" }}
+              className="absolute w-48 md:w-64 bg-white p-3 pb-8 shadow-xl transform -translate-x-1/2 -translate-y-1/2 rotate-2"
+            >
+              <img 
+                src={photo.src} 
+                alt="Us" 
+                className="w-full h-full object-cover filter sepia-[0.2]"
+              />
+            </motion.div>
+          ))}
+        </div>
+      </div>
 
-      {/* Gradient overlay to ensure text readability */}
-      <div className="fixed inset-0 z-0 bg-gradient-to-b from-white/90 via-white/80 to-white/90 backdrop-blur-[1px]" />
-
-      <div className="relative z-30 max-w-3xl mx-auto px-6 py-32 flex flex-col items-center">
+      {/* Content Container - creates the scroll height */}
+      <div className="relative z-10 w-full flex flex-col items-center">
         
-        {/* Header Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-          className="text-center mb-32 relative z-40"
-        >
-          <h1 className="text-6xl md:text-8xl font-medium text-stone-900 mb-6 tracking-tighter drop-shadow-sm" data-testid="title-success">
-            She said Yes!
-          </h1>
-          <p className="text-2xl md:text-3xl italic text-stone-600 font-light">
-            (I knew you would ❤️)
-          </p>
-        </motion.div>
+        {/* Initial View - Just the "She said Yes" text */}
+        <div className="h-screen flex items-center justify-center">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.5, duration: 1 }}
+            className="text-center bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-stone-100"
+          >
+            <h1 className="text-6xl md:text-8xl font-medium text-stone-900 mb-4 tracking-tighter">
+              She said Yes!
+            </h1>
+            <p className="text-2xl md:text-3xl italic text-stone-600 font-light">
+              (Scroll down to read my letter)
+            </p>
+          </motion.div>
+        </div>
 
-        {/* Photo Frame */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1, duration: 1 }}
-          className="relative w-full aspect-[3/4] md:aspect-[4/5] max-w-md mb-24 bg-white p-3 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rotate-1"
-        >
-          <img 
-            src={couplePhoto} 
-            alt="Us together" 
-            className="w-full h-full object-cover"
-            data-testid="image-couple"
-          />
-        </motion.div>
-
-        {/* Letter Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1 }}
-          className="bg-white/80 backdrop-blur-sm p-10 md:p-16 shadow-xl mb-24 w-full border border-stone-100"
-        >
-          <p className="mb-8 font-semibold text-3xl text-stone-900 font-romantic" data-testid="letter-greeting">Dearest Ga-eun,</p>
+        {/* Letter Sections - Spaced out for scrolling */}
+        <div className="max-w-2xl px-6 pb-32">
           
-          <div className="space-y-8 text-stone-800 text-xl md:text-2xl font-light leading-relaxed font-romantic" data-testid="letter-body">
-            <p>
-              I'm writing this because I want you to know how much you mean to me. 
-              Usually I'm not this cheesy, but for you, I'll make an exception.
+          <motion.div style={{ opacity: textOpacity1 }} className="min-h-[50vh] flex items-center justify-center py-20">
+             <p className="text-3xl md:text-4xl text-stone-800 leading-relaxed text-center font-romantic">
+              "Dearest Ga-eun,<br/>
+              From the moment we met, you've brought so much joy into my life."
             </p>
-            <p>
-              From the moment we met, you've brought so much joy into my life. 
-              Your smile, your laugh, and even the way you get angry at me—I love all of it.
-            </p>
-            <p>
-              I wanted to ask you this in a special way because you deserve nothing but the best.
-              Thank you for being my valentine, today and hopefully for many more to come.
-            </p>
-            <p className="pt-8 text-2xl">
-              Love,<br/>
-              <span className="font-semibold">Your Valentine</span>
-            </p>
-          </div>
-        </motion.div>
+          </motion.div>
 
-        {/* Replay Button */}
-        <motion.button
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          onClick={onReplay}
-          className="px-10 py-4 bg-stone-900 text-white font-sans text-xs tracking-[0.2em] uppercase hover:bg-stone-700 transition-colors shadow-lg rounded-sm"
-          data-testid="button-replay"
-        >
-          Replay Our Story
-        </motion.button>
+          <motion.div style={{ opacity: textOpacity2 }} className="min-h-[50vh] flex items-center justify-center py-20">
+            <p className="text-3xl md:text-4xl text-stone-800 leading-relaxed text-center font-romantic">
+              "Your smile, your laugh, and even the way you look at me when I'm being silly—I love every single bit of it."
+            </p>
+          </motion.div>
 
-        <div className="h-24" />
+          <motion.div style={{ opacity: textOpacity3 }} className="min-h-[50vh] flex items-center justify-center py-20">
+            <p className="text-3xl md:text-4xl text-stone-800 leading-relaxed text-center font-romantic">
+              "I wanted to ask you this in a special way because you deserve nothing but the best. Thank you for being my valentine."
+            </p>
+          </motion.div>
+
+          <motion.div style={{ opacity: textOpacity4 }} className="min-h-[50vh] flex flex-col items-center justify-center py-20">
+            <p className="text-4xl md:text-5xl text-stone-900 font-bold mb-8 text-center font-romantic">
+              "I love you, forever."
+            </p>
+            <p className="text-2xl text-stone-600 italic">
+              - Your Valentine
+            </p>
+          </motion.div>
+
+          <motion.div style={{ opacity: buttonOpacity }} className="flex justify-center py-20">
+             <button
+              onClick={onReplay}
+              className="px-10 py-4 bg-stone-900 text-white font-sans text-xs tracking-[0.2em] uppercase hover:bg-stone-700 transition-colors shadow-lg rounded-sm"
+            >
+              Replay Our Story
+            </button>
+          </motion.div>
+        </div>
       </div>
     </div>
   );
