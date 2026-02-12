@@ -294,10 +294,11 @@ function EnvelopeLetter({ scrollYProgress }: { scrollYProgress: any }) {
   const envelopeEnterY = useTransform(scrollYProgress, [0.4, 0.55], [600, 0]);
   const envelopeOpacity = useTransform(scrollYProgress, [0.4, 0.48], [0, 1]);
 
-  const flapRotate = useTransform(scrollYProgress, [0.58, 0.7], [0, -180]);
+  const flapRotate = useTransform(scrollYProgress, [0.55, 0.68], [0, -180]);
 
   const letterY = useTransform(scrollYProgress, [0.7, 0.9], [0, -420]);
   const letterScale = useTransform(scrollYProgress, [0.7, 0.9], [0.85, 1.05]);
+  const letterZIndex = useTransform(scrollYProgress, [0.69, 0.7], [2, 20]);
 
   const envelopeBodyY = useTransform(scrollYProgress, [0.82, 1.0], [0, 350]);
   const envelopeBodyOpacity = useTransform(scrollYProgress, [0.85, 1.0], [1, 0]);
@@ -331,8 +332,9 @@ function EnvelopeLetter({ scrollYProgress }: { scrollYProgress: any }) {
             style={{ 
               y: letterY,
               scale: letterScale,
+              zIndex: letterZIndex,
             }}
-            className="absolute left-3 right-3 bg-[#fffbf0] shadow-md p-5 md:p-7 text-center flex flex-col items-center justify-start origin-bottom z-[2] rounded-sm"
+            className="absolute left-3 right-3 bg-[#fffbf0] shadow-md p-5 md:p-7 text-center flex flex-col items-center justify-start origin-bottom rounded-sm"
             data-testid="letter-content"
           >
              <div className="w-full border-2 border-double border-[#e6dace] p-4 flex flex-col justify-between" style={{ minHeight: "420px" }}>
