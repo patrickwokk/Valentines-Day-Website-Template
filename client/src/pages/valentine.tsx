@@ -26,17 +26,17 @@ import floralBg from "@assets/1c1e1934764a7859c7d06dd90ee9fd5e_1770876135345.jpg
 type GameState = "INITIAL" | "REJECT_1" | "REJECT_2" | "SUCCESS";
 
 const GALLERY_PHOTOS = [
-  { src: photo1, rotate: -5, x: -10, y: 0 },
-  { src: photo2, rotate: 3, x: 15, y: -20 },
-  { src: photo3, rotate: -2, x: -20, y: 10 },
-  { src: photo4, rotate: 6, x: 25, y: 15 },
-  { src: photo5, rotate: -4, x: -15, y: -10 },
-  { src: photo6, rotate: 2, x: 10, y: 20 },
-  { src: photo7, rotate: -6, x: -25, y: -5 },
-  { src: photo8, rotate: 4, x: 20, y: 5 },
-  { src: photo9, rotate: -3, x: -5, y: -15 },
-  { src: photo10, rotate: 5, x: 30, y: -25 },
-  { src: photo11, rotate: -1, x: 0, y: 25 },
+  { src: photo1, rotate: -5, x: -35, y: -25, z: 1 },
+  { src: photo2, rotate: 3, x: 35, y: -30, z: 2 },
+  { src: photo3, rotate: -2, x: -40, y: 15, z: 3 },
+  { src: photo4, rotate: 6, x: 45, y: 10, z: 1 },
+  { src: photo5, rotate: -4, x: -15, y: -40, z: 2 },
+  { src: photo6, rotate: 2, x: 10, y: 45, z: 3 },
+  { src: photo7, rotate: -6, x: -45, y: -5, z: 1 },
+  { src: photo8, rotate: 4, x: 40, y: 35, z: 2 },
+  { src: photo9, rotate: -3, x: -20, y: 30, z: 3 },
+  { src: photo10, rotate: 5, x: 25, y: -15, z: 1 },
+  { src: photo11, rotate: -1, x: 0, y: -50, z: 2 },
 ];
 
 export default function ValentinePage() {
@@ -183,121 +183,127 @@ export default function ValentinePage() {
 function SuccessView({ onReplay }: { onReplay: () => void }) {
   const { scrollYProgress } = useScroll();
   
-  // Create staggered animations for the photos based on scroll
-  // We want them to start scattered, then "scoot" to the sides as we scroll down
-  const photoAnims = GALLERY_PHOTOS.map((_, i) => {
-    // Alternate moving left and right
-    const direction = i % 2 === 0 ? -1 : 1;
-    // Calculate a random but deterministic movement amount
-    const moveX = (300 + Math.random() * 200) * direction;
+  // Parallax up movement for photos
+  const photoAnims = GALLERY_PHOTOS.map((photo, i) => {
+    // Each photo moves up at a slightly different speed (parallax)
+    // We want them to start at their original position and move UP out of view
+    // Some move faster (closer), some slower (further)
+    const speed = 0.5 + Math.random() * 1.5;
+    const yOutput = -800 * speed; // Move way up
     
     return {
-      x: useTransform(scrollYProgress, [0, 0.2], [0, moveX]),
-      opacity: useTransform(scrollYProgress, [0, 0.3], [1, 0.2]),
-      scale: useTransform(scrollYProgress, [0, 0.2], [1, 0.8]),
+      y: useTransform(scrollYProgress, [0, 0.6], [0, yOutput]),
+      opacity: useTransform(scrollYProgress, [0, 0.2], [1, 0]), // Fade out quicker to clear view
     };
   });
 
-  // Opacity controls for text sections
-  const textOpacity1 = useTransform(scrollYProgress, [0.15, 0.25], [0, 1]);
-  const textOpacity2 = useTransform(scrollYProgress, [0.3, 0.4], [0, 1]);
-  const textOpacity3 = useTransform(scrollYProgress, [0.45, 0.55], [0, 1]);
-  const textOpacity4 = useTransform(scrollYProgress, [0.6, 0.7], [0, 1]);
-  const buttonOpacity = useTransform(scrollYProgress, [0.8, 0.9], [0, 1]);
+  // Sticky text animations - enter, hold, exit up
+  const textOpacity1 = useTransform(scrollYProgress, [0.1, 0.2, 0.3, 0.4], [0, 1, 1, 0]);
+  const textY1 = useTransform(scrollYProgress, [0.1, 0.2, 0.3, 0.4], [50, 0, 0, -50]);
+
+  const textOpacity2 = useTransform(scrollYProgress, [0.3, 0.4, 0.5, 0.6], [0, 1, 1, 0]);
+  const textY2 = useTransform(scrollYProgress, [0.3, 0.4, 0.5, 0.6], [50, 0, 0, -50]);
+
+  const textOpacity3 = useTransform(scrollYProgress, [0.5, 0.6, 0.7, 0.8], [0, 1, 1, 0]);
+  const textY3 = useTransform(scrollYProgress, [0.5, 0.6, 0.7, 0.8], [50, 0, 0, -50]);
+
+  const textOpacity4 = useTransform(scrollYProgress, [0.7, 0.8, 0.9, 1.0], [0, 1, 1, 1]); // Stays visible at end
+  const textY4 = useTransform(scrollYProgress, [0.7, 0.8, 0.9, 1.0], [50, 0, 0, 0]);
+
+  const buttonOpacity = useTransform(scrollYProgress, [0.85, 0.95], [0, 1]);
+  const headerOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]); // Fade out header quickly
 
   return (
-    <div className="min-h-[300vh] relative bg-stone-50 overflow-x-hidden font-romantic">
+    <div className="h-[400vh] relative bg-stone-50 overflow-x-hidden font-romantic">
       
-      {/* Sticky container for the photos to stay fixed while we scroll "through" them */}
+      {/* Fixed Background Container for Photos */}
       <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center overflow-hidden">
         <div className="relative w-full h-full max-w-6xl mx-auto">
           {GALLERY_PHOTOS.map((photo, i) => (
             <motion.div
               key={i}
               style={{
-                x: photoAnims[i].x,
+                y: photoAnims[i].y,
                 opacity: photoAnims[i].opacity,
-                scale: photoAnims[i].scale,
                 rotate: photo.rotate,
                 left: `${50 + photo.x}%`,
-                top: `${40 + photo.y}%`,
+                top: `${50 + photo.y}%`, // Centered vertically initially
               }}
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: i * 0.1, duration: 0.8, type: "spring" }}
-              className="absolute w-48 md:w-64 bg-white p-3 pb-8 shadow-xl transform -translate-x-1/2 -translate-y-1/2 rotate-2"
+              transition={{ delay: i * 0.05, duration: 0.8, type: "spring" }}
+              className="absolute w-40 md:w-56 bg-white p-2 pb-6 shadow-lg transform -translate-x-1/2 -translate-y-1/2"
             >
               <img 
                 src={photo.src} 
                 alt="Us" 
-                className="w-full h-full object-cover filter sepia-[0.2]"
+                className="w-full h-full object-cover filter sepia-[0.1]"
               />
             </motion.div>
           ))}
         </div>
       </div>
 
-      {/* Content Container - creates the scroll height */}
-      <div className="relative z-10 w-full flex flex-col items-center">
+      {/* Fixed Centered Text Container - Messages appear here one by one */}
+      <div className="fixed inset-0 pointer-events-none z-20 flex flex-col items-center justify-center p-6">
         
-        {/* Initial View - Just the "She said Yes" text */}
-        <div className="h-screen flex items-center justify-center">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.5, duration: 1 }}
-            className="text-center bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-stone-100"
+        {/* Header - Disappears on scroll */}
+        <motion.div 
+          style={{ opacity: headerOpacity }}
+          className="absolute text-center bg-white/90 backdrop-blur-md p-10 rounded-2xl shadow-xl border border-stone-100 top-[60%]" // Moved down
+        >
+          <h1 className="text-5xl md:text-7xl font-medium text-stone-900 mb-4 tracking-tighter">
+            Horray! 그럴 줄 알았어 !!
+          </h1>
+          <p className="text-xl md:text-2xl italic text-stone-600 font-light animate-bounce mt-4">
+            scroll down 주세요~
+          </p>
+        </motion.div>
+
+        {/* Message 1 */}
+        <motion.div style={{ opacity: textOpacity1, y: textY1 }} className="absolute max-w-2xl text-center">
+           <p className="text-3xl md:text-5xl text-stone-900 leading-relaxed font-romantic font-bold drop-shadow-sm bg-white/60 p-4 rounded-xl backdrop-blur-sm">
+            "Dearest Ga-eun,<br/>
+            From the moment we met, you've brought so much joy into my life."
+          </p>
+        </motion.div>
+
+        {/* Message 2 */}
+        <motion.div style={{ opacity: textOpacity2, y: textY2 }} className="absolute max-w-2xl text-center">
+          <p className="text-3xl md:text-5xl text-stone-900 leading-relaxed font-romantic font-bold drop-shadow-sm bg-white/60 p-4 rounded-xl backdrop-blur-sm">
+            "Your smile, your laugh, and even the way you look at me when I'm being silly—I love every single bit of it."
+          </p>
+        </motion.div>
+
+        {/* Message 3 */}
+        <motion.div style={{ opacity: textOpacity3, y: textY3 }} className="absolute max-w-2xl text-center">
+          <p className="text-3xl md:text-5xl text-stone-900 leading-relaxed font-romantic font-bold drop-shadow-sm bg-white/60 p-4 rounded-xl backdrop-blur-sm">
+            "I wanted to ask you this in a special way because you deserve nothing but the best. Thank you for being my valentine."
+          </p>
+        </motion.div>
+
+        {/* Final Message */}
+        <motion.div style={{ opacity: textOpacity4, y: textY4 }} className="absolute max-w-2xl text-center flex flex-col items-center">
+          <p className="text-5xl md:text-7xl text-stone-900 font-bold mb-8 font-romantic">
+            "I love you, forever."
+          </p>
+          <p className="text-3xl text-stone-600 italic mb-8">
+            - Your Valentine
+          </p>
+        </motion.div>
+
+        {/* Replay Button - Only active at end */}
+        <motion.div style={{ opacity: buttonOpacity }} className="absolute bottom-20 pointer-events-auto">
+           <button
+            onClick={onReplay}
+            className="px-10 py-4 bg-stone-900 text-white font-sans text-xs tracking-[0.2em] uppercase hover:bg-stone-700 transition-colors shadow-lg rounded-sm"
           >
-            <h1 className="text-6xl md:text-8xl font-medium text-stone-900 mb-4 tracking-tighter">
-              She said Yes!
-            </h1>
-            <p className="text-2xl md:text-3xl italic text-stone-600 font-light">
-              (Scroll down to read my letter)
-            </p>
-          </motion.div>
-        </div>
+            Replay Our Story
+          </button>
+        </motion.div>
 
-        {/* Letter Sections - Spaced out for scrolling */}
-        <div className="max-w-2xl px-6 pb-32">
-          
-          <motion.div style={{ opacity: textOpacity1 }} className="min-h-[50vh] flex items-center justify-center py-20">
-             <p className="text-3xl md:text-4xl text-stone-800 leading-relaxed text-center font-romantic">
-              "Dearest Ga-eun,<br/>
-              From the moment we met, you've brought so much joy into my life."
-            </p>
-          </motion.div>
-
-          <motion.div style={{ opacity: textOpacity2 }} className="min-h-[50vh] flex items-center justify-center py-20">
-            <p className="text-3xl md:text-4xl text-stone-800 leading-relaxed text-center font-romantic">
-              "Your smile, your laugh, and even the way you look at me when I'm being silly—I love every single bit of it."
-            </p>
-          </motion.div>
-
-          <motion.div style={{ opacity: textOpacity3 }} className="min-h-[50vh] flex items-center justify-center py-20">
-            <p className="text-3xl md:text-4xl text-stone-800 leading-relaxed text-center font-romantic">
-              "I wanted to ask you this in a special way because you deserve nothing but the best. Thank you for being my valentine."
-            </p>
-          </motion.div>
-
-          <motion.div style={{ opacity: textOpacity4 }} className="min-h-[50vh] flex flex-col items-center justify-center py-20">
-            <p className="text-4xl md:text-5xl text-stone-900 font-bold mb-8 text-center font-romantic">
-              "I love you, forever."
-            </p>
-            <p className="text-2xl text-stone-600 italic">
-              - Your Valentine
-            </p>
-          </motion.div>
-
-          <motion.div style={{ opacity: buttonOpacity }} className="flex justify-center py-20">
-             <button
-              onClick={onReplay}
-              className="px-10 py-4 bg-stone-900 text-white font-sans text-xs tracking-[0.2em] uppercase hover:bg-stone-700 transition-colors shadow-lg rounded-sm"
-            >
-              Replay Our Story
-            </button>
-          </motion.div>
-        </div>
       </div>
+
     </div>
   );
 }
