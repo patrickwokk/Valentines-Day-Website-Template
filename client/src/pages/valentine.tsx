@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
 
 // Assets
-import happyPuppy from "/puppy-happy.jpg";
-import angryPuppy from "/puppy-angry.jpg";
-import beggingPuppy from "/puppy-begging.jpg";
+import happyPuppy from "@assets/1-excited_1770876596574.gif";
+import angryPuppy from "@assets/2-angry-dog_1770876596575.gif";
+import beggingPuppy from "@assets/3-puppy-please_1770876596575.webp";
 import couplePhoto from "/couple-placeholder.jpg"; 
 
 // Using the attached asset for the background
