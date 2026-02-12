@@ -17,8 +17,6 @@ import photo6 from "@assets/D148961A-5E38-4097-8193-DA843BB530FB_1_105_c_1770877
 import photo7 from "@assets/ACF6D9EB-768F-4858-ADD1-F2426FE4DACA_1_105_c_1770877180380.jpeg";
 import photo8 from "@assets/2ABA7306-3DAF-4367-A6D0-590DB4EF9145_1_105_c_1770877209211.jpeg";
 import photo9 from "@assets/8F1AEA78-F103-4E27-A784-8640A453772A_4_5005_c_1770877217445.jpeg";
-import photo10 from "@assets/937658B5-ED2D-4D85-92DF-44A27B809F8C_1_102_o_1770877231936.jpeg";
-import photo11 from "@assets/5C1DD69B-F575-4053-A9E2-8AF8D85BC7A8_1_102_o_1770877239395.jpeg";
 
 // Floral Assets (Keeping for subtle background texture if needed, or removing if fully replaced)
 import floralBg from "@assets/1c1e1934764a7859c7d06dd90ee9fd5e_1770876135345.jpg";
@@ -35,8 +33,6 @@ const GALLERY_PHOTOS = [
   { src: photo7, rotate: -6, x: -45, y: -5, z: 1 },
   { src: photo8, rotate: 4, x: 40, y: 35, z: 2 },
   { src: photo9, rotate: -3, x: -20, y: 30, z: 3 },
-  { src: photo10, rotate: 5, x: 25, y: -15, z: 1 },
-  { src: photo11, rotate: -1, x: 0, y: -50, z: 2 },
 ];
 
 export default function ValentinePage() {
