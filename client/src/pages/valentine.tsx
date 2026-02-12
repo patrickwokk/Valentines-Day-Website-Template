@@ -336,27 +336,39 @@ function EnvelopeLetter({ scrollYProgress }: { scrollYProgress: any }) {
             data-testid="letter-content"
           >
             <div className="flex w-full flex-col justify-between border border-[#e6dace] bg-[#fffaf1]/95 p-4 md:p-5" style={{ minHeight: "500px" }}>
-              <div className="space-y-5">
+              <div className="space-y-4">
                 <div className="h-px w-full bg-gradient-to-r from-transparent via-[#c7b39f] to-transparent" />
                 <p className="border-b border-stone-200 pb-3 font-romantic text-2xl font-bold text-stone-800 md:text-3xl">
-                  Dearest Ga-eun,
+                  To 우리 소중한 공주❤️,
                 </p>
 
-                <p className="font-romantic text-lg leading-relaxed text-stone-700 md:text-xl">
-                  From the moment we met, you've brought so much joy into my life. Your smile, your laugh, and even the way you look at me when I'm being silly—I love every single bit of it.
+                <p className="font-romantic text-base leading-relaxed text-stone-700 md:text-lg">
+                  From the moment we met, you've bought so much joy & laughter into my simple life like someone suddenly turned the colors back on.
                 </p>
 
-                <p className="font-romantic text-lg leading-relaxed text-stone-700 md:text-xl">
-                  I wanted to ask you this in a special way because you deserve nothing but the best. Thank you for being my valentine.
+                <p className="font-romantic text-base leading-relaxed text-stone-700 md:text-lg">
+                  I miss your smile, your laugh, and all the little moments in between. I wish I could see you again very soon so we can make even more fun & unforgettable memories, just like we did in Korea and Indonesia.
+                </p>
+
+                <p className="font-romantic text-base leading-relaxed text-stone-700 md:text-lg">
+                  I wanted to ask you this in a special way, because you deserve nothing but the best. Even though I can't be there in person with "real" flowers this time, I hope this little gift still reaches you with a big smile. Thank you for being my Valentine. 사랑한다 ❤️
+                </p>
+
+                <p className="font-romantic text-sm italic leading-relaxed text-stone-500 md:text-base">
+                  P.s. I made this late at night for days, right in front of you during our calls and powered by lots of love, good music, and questionable sleep decisions.
+                </p>
+
+                <p className="font-romantic text-sm italic leading-relaxed text-stone-500 md:text-base">
+                  Special shoutout to Replit, Claude code, and ChatGPT. LMAO they really carried my ass🤓
                 </p>
               </div>
 
-              <div className="mt-8 border-t border-stone-200 pt-6">
-                <p className="font-romantic text-2xl font-bold text-stone-900 md:text-4xl">
-                  I love you, forever.
+              <div className="mt-4 border-t border-stone-200 pt-4">
+                <p className="font-romantic text-base text-stone-700 md:text-lg">
+                  Your one & only smarty pants,
                 </p>
-                <p className="mt-2 font-sans text-xs uppercase tracking-widest text-stone-500">
-                  - Your Valentine
+                <p className="mt-1 font-romantic text-2xl font-bold text-stone-900 md:text-3xl">
+                  Kwakteria
                 </p>
               </div>
             </div>
