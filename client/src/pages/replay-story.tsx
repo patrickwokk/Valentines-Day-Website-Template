@@ -45,6 +45,29 @@ type Frame = {
   rotate: number;
 };
 
+type SpotifyEmbedController = {
+  play: () => void;
+  resume?: () => void;
+  pause?: () => void;
+  destroy?: () => void;
+  addListener?: (eventName: string, callback: () => void) => void;
+};
+
+type SpotifyIFrameAPI = {
+  createController: (
+    element: HTMLElement,
+    options: { uri: string; width?: number | string; height?: number | string },
+    callback: (controller: SpotifyEmbedController) => void
+  ) => void;
+};
+
+declare global {
+  interface Window {
+    onSpotifyIframeApiReady?: (api: SpotifyIFrameAPI) => void;
+    SpotifyIFrameAPIRef?: SpotifyIFrameAPI;
+  }
+}
+
 const MEMORY_IMAGES = [
   memory1, memory2, memory3, memory4, memory5, memory6, memory7, memory8, memory9,
   memory10, memory11, memory12, memory13, memory14, memory15, memory16, memory17, memory18,
@@ -53,6 +76,8 @@ const MEMORY_IMAGES = [
 ];
 
 const ROTATIONS = [-7, 5, -5, 6, -4, 5, -8, 4, -3, 7, -6, 4];
+const SPOTIFY_IFRAME_API_SRC = "https://open.spotify.com/embed/iframe-api/v1";
+const GLUE_SONG_URI = "spotify:track:0tMMPZEt6Gyrl9FI8zSicm";
 
 const STORY_FRAMES: Frame[] = MEMORY_IMAGES.map((src, index) => ({
   src,
@@ -63,7 +88,12 @@ export default function ReplayStoryPage() {
   const [, setLocation] = useLocation();
   const pageRef = useRef<HTMLElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
+  const spotifyHostRef = useRef<HTMLDivElement | null>(null);
+  const spotifyControllerRef = useRef<SpotifyEmbedController | null>(null);
+  const spotifyStartedRef = useRef(false);
+  const interactionPlayAttemptedRef = useRef(false);
   const [maxTranslate, setMaxTranslate] = useState(0);
+  const [showTapHint, setShowTapHint] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: pageRef,
@@ -75,6 +105,90 @@ export default function ReplayStoryPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+    let autoplayHintTimeout: number | undefined;
+    let removeInteractionListeners = () => {};
+
+    const playNow = (fromInteraction = false) => {
+      if (!spotifyControllerRef.current) return;
+      if (spotifyStartedRef.current) return;
+      if (fromInteraction && interactionPlayAttemptedRef.current) return;
+
+      if (fromInteraction) interactionPlayAttemptedRef.current = true;
+      spotifyControllerRef.current.play();
+      spotifyControllerRef.current.resume?.();
+      setShowTapHint(false);
+    };
+
+    const mountController = (api: SpotifyIFrameAPI) => {
+      if (!spotifyHostRef.current || spotifyControllerRef.current || !mounted) return;
+
+      api.createController(
+        spotifyHostRef.current,
+        {
+          uri: GLUE_SONG_URI,
+          width: "100%",
+          height: 80,
+        },
+        (controller) => {
+          if (!mounted) return;
+          spotifyControllerRef.current = controller;
+          controller.addListener?.("playback_started", () => {
+            spotifyStartedRef.current = true;
+            setShowTapHint(false);
+            removeInteractionListeners();
+          });
+
+          // Best-effort autoplay on page enter.
+          playNow();
+          autoplayHintTimeout = window.setTimeout(() => setShowTapHint(true), 1400);
+        }
+      );
+    };
+
+    const onFirstInteraction = () => {
+      playNow(true);
+      removeInteractionListeners();
+    };
+    window.addEventListener("pointerdown", onFirstInteraction, { passive: true });
+    window.addEventListener("touchstart", onFirstInteraction, { passive: true });
+    window.addEventListener("wheel", onFirstInteraction, { passive: true });
+    window.addEventListener("keydown", onFirstInteraction);
+    removeInteractionListeners = () => {
+      window.removeEventListener("pointerdown", onFirstInteraction);
+      window.removeEventListener("touchstart", onFirstInteraction);
+      window.removeEventListener("wheel", onFirstInteraction);
+      window.removeEventListener("keydown", onFirstInteraction);
+    };
+
+    if (window.SpotifyIFrameAPIRef) {
+      mountController(window.SpotifyIFrameAPIRef);
+    }
+
+    const previousReady = window.onSpotifyIframeApiReady;
+    window.onSpotifyIframeApiReady = (api: SpotifyIFrameAPI) => {
+      window.SpotifyIFrameAPIRef = api;
+      previousReady?.(api);
+      mountController(api);
+    };
+
+    if (!document.querySelector(`script[src="${SPOTIFY_IFRAME_API_SRC}"]`)) {
+      const script = document.createElement("script");
+      script.src = SPOTIFY_IFRAME_API_SRC;
+      script.async = true;
+      document.body.appendChild(script);
+    }
+
+    return () => {
+      mounted = false;
+      if (autoplayHintTimeout) window.clearTimeout(autoplayHintTimeout);
+      removeInteractionListeners();
+      spotifyControllerRef.current?.destroy?.();
+      spotifyControllerRef.current = null;
+    };
   }, []);
 
   useEffect(() => {
@@ -105,6 +219,19 @@ export default function ReplayStoryPage() {
         <ArrowLeft size={14} />
         Back
       </button>
+
+      <div className="fixed bottom-4 right-4 z-50 w-[250px] md:w-[320px]">
+        <div
+          ref={spotifyHostRef}
+          className="h-20 w-full overflow-hidden rounded-xl border border-stone-300/40 shadow-lg"
+          aria-label="Spotify player"
+        />
+        {showTapHint && (
+          <p className="mt-1 text-center text-[10px] uppercase tracking-[0.14em] text-stone-500">
+            Tap or scroll once to start music
+          </p>
+        )}
+      </div>
 
       <div className="fixed inset-0 flex h-screen flex-col justify-center px-6 pb-8 pt-20 md:px-10 md:pb-12">
         <div className="mx-auto max-w-5xl text-center">
