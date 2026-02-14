@@ -37,4 +37,4 @@ npm start
 
 ## Made With
 
-Late nights, good music, and a lot of love.
+Late nights, lots of love, and questionable sleep decisions.
