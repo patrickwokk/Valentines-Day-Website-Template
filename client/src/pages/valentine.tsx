@@ -9,20 +9,19 @@ import angryPuppy from "@assets/2-angry-dog_1770876596575.gif";
 import beggingPuppy from "@assets/3-puppy-please_1770876596575.webp";
 
 // Photo Assets
-import photo1 from "@assets/BD8BBA69-E650-4124-BBAC-618ABB29E997_1_102_o_1770877002215.jpeg";
-import photo2 from "@assets/9969E619-B449-453C-91D5-3174D487D6EC_4_5005_c_1770877019708.jpeg";
-import photo3 from "@assets/C12B98ED-9F98-4521-9C97-C924930B551E_1_102_o_1770877061969.jpeg";
-import photo4 from "@assets/911D2329-F027-4F57-BD4D-2316528C43EA_1_102_o_1770877101880.jpeg";
-import photo5 from "@assets/B3E5E6DC-DAC9-42C2-A183-36D5C892E809_4_5005_c_1770877139538.jpeg";
-import photo6 from "@assets/D148961A-5E38-4097-8193-DA843BB530FB_1_105_c_1770877169930.jpeg";
-import photo7 from "@assets/ACF6D9EB-768F-4858-ADD1-F2426FE4DACA_1_105_c_1770877180380.jpeg";
-import photo8 from "@assets/2ABA7306-3DAF-4367-A6D0-590DB4EF9145_1_105_c_1770877209211.jpeg";
-import photo9 from "@assets/8F1AEA78-F103-4E27-A784-8640A453772A_4_5005_c_1770877217445.jpeg";
-// New photos
-import photo10 from "@assets/EE12EF45-3ED6-41DF-9170-DB1964B01338_1_105_c_1770878484705.jpeg";
-import photo11 from "@assets/C36829A7-0F61-442B-978C-28FFE9EF7E7F_1_102_o_1770878516271.jpeg";
-import photo12 from "@assets/F0F13826-741D-4BF4-BC06-7E56BC4C0D2D_4_5005_c_1770878541738.jpeg";
-import photo13 from "@assets/26E6FFDE-BE64-4309-87B6-C4D57FD2B84F_1_102_o_1770878550588.jpeg";
+import photo1 from "@assets/template-photo-1.jpg";
+import photo2 from "@assets/template-photo-2.jpg";
+import photo3 from "@assets/template-photo-3.jpg";
+import photo4 from "@assets/template-photo-4.jpg";
+import photo5 from "@assets/template-photo-5.jpg";
+import photo6 from "@assets/template-photo-6.jpg";
+import photo7 from "@assets/template-photo-7.jpg";
+import photo8 from "@assets/template-photo-8.jpg";
+import photo9 from "@assets/template-photo-9.jpg";
+import photo10 from "@assets/template-photo-10.jpg";
+import photo11 from "@assets/template-photo-11.jpg";
+import photo12 from "@assets/template-photo-12.jpg";
+import photo13 from "@assets/template-photo-13.jpg";
 
 // Floral Assets (Keeping for subtle background texture if needed, or removing if fully replaced)
 import floralBg from "@assets/1c1e1934764a7859c7d06dd90ee9fd5e_1770876135345.jpg";
@@ -90,7 +89,7 @@ export default function ValentinePage() {
       case "INITIAL":
         return {
           image: happyPuppy,
-          text: "가은아 will you be my valentine? 😫🥺🤩",
+          text: "Will you be my valentine? 😫🥺🤩",
           yesText: "Yes!",
           noText: "No",
           showNo: true
@@ -258,15 +257,15 @@ function SuccessView({ onReplay }: { onReplay: () => void }) {
               transition={{ duration: 0.8, repeat: Infinity, repeatDelay: 1 }}
               className="text-6xl md:text-8xl font-bold text-stone-900 tracking-tighter inline-block"
             >
-              Horray!
+              Hooray!
             </motion.span>
              <span className="text-4xl md:text-6xl font-medium text-stone-900 tracking-tight">
-               그럴 줄 알았어 !!
+               I knew you would !!
             </span>
           </div>
           
           <p className="text-xl md:text-2xl italic text-stone-600 font-light mt-4">
-            scroll down 주세요~
+            scroll down please~
           </p>
         </motion.div>
       </div>
@@ -321,36 +320,32 @@ function EnvelopeLetter({ scrollYProgress }: { scrollYProgress: any }) {
             <div className="space-y-3">
               <div className="h-px w-full bg-gradient-to-r from-transparent via-[#c7b39f] to-transparent" />
               <p className="border-b border-stone-200 pb-2 font-romantic text-xl font-bold text-stone-800 md:text-2xl">
-                To 우리 소중한 공주❤️,
+                To My Dearest Valentine ❤️,
               </p>
 
               <p className="font-romantic text-sm leading-relaxed text-stone-700 md:text-base">
-                From the moment we met, you{"'"}ve bought so much joy & laughter into my simple life like someone suddenly turned the colors back on.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
               </p>
 
               <p className="font-romantic text-sm leading-relaxed text-stone-700 md:text-base">
-                I miss your smile, your laugh, and all the little moments in between. I wish I could see you again very soon so we can make even more fun & unforgettable memories, just like we did in Korea and Indonesia.
+                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
               </p>
 
               <p className="font-romantic text-sm leading-relaxed text-stone-700 md:text-base">
-                I wanted to ask you this in a special way, because you deserve nothing but the best. Even though I can{"'"}t be there in person with {'"'}real{'"'} flowers this time, I hope this little gift still reaches you with a big smile. Thank you for being my Valentine. 사랑한다 ❤️
+                Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Happy Valentine{"'"}s Day ❤️
               </p>
 
               <p className="font-romantic text-xs italic leading-relaxed text-stone-500 md:text-sm">
-                P.s. I made this late at night for days, right in front of you during our calls and powered by lots of love, good music, and questionable sleep decisions.
-              </p>
-
-              <p className="font-romantic text-xs italic leading-relaxed text-stone-500 md:text-sm">
-                Special shoutout to Replit, Claude code, and ChatGPT. LMAO they really carried my ass🤓
+                P.s. Write your own heartfelt message here to make it personal and special.
               </p>
             </div>
 
             <div className="mt-3 border-t border-stone-200 pt-3">
               <p className="font-romantic text-sm text-stone-700 md:text-base">
-                Your one & only smarty pants,
+                Forever yours,
               </p>
               <p className="mt-1 font-romantic text-xl font-bold text-stone-900 md:text-2xl">
-                Kwakteria
+                Your Name
               </p>
             </div>
           </div>

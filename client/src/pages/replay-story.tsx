@@ -3,42 +3,42 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useLocation } from "wouter";
 import { ArrowLeft } from "lucide-react";
 
-import memory1 from "@assets/replay_memories/1-memory.jpeg";
-import memory2 from "@assets/replay_memories/2-memory.jpeg";
-import memory3 from "@assets/replay_memories/3-memory.jpeg";
-import memory4 from "@assets/replay_memories/4-memory.jpeg";
-import memory5 from "@assets/replay_memories/5-memory.JPG";
-import memory6 from "@assets/replay_memories/6-memory.jpeg";
-import memory7 from "@assets/replay_memories/7-memory.jpeg";
-import memory8 from "@assets/replay_memories/8-memory.jpeg";
-import memory9 from "@assets/replay_memories/9-memory.JPG";
-import memory10 from "@assets/replay_memories/10-memory.JPG";
-import memory11 from "@assets/replay_memories/11-memory.JPG";
-import memory12 from "@assets/replay_memories/12-memory.jpeg";
-import memory13 from "@assets/replay_memories/13-memory.jpeg";
-import memory14 from "@assets/replay_memories/14-memory.jpeg";
-import memory15 from "@assets/replay_memories/15-memory.jpeg";
-import memory16 from "@assets/replay_memories/16-memory.jpeg";
-import memory17 from "@assets/replay_memories/17-memory.jpeg";
-import memory18 from "@assets/replay_memories/18-memory.jpeg";
-import memory19 from "@assets/replay_memories/19-memory.jpeg";
-import memory20 from "@assets/replay_memories/20-memory.jpeg";
-import memory21 from "@assets/replay_memories/21-memory.JPG";
-import memory22 from "@assets/replay_memories/22-memory.JPG";
-import memory23 from "@assets/replay_memories/23-memory.JPG";
-import memory24 from "@assets/replay_memories/24-memory.JPG";
-import memory25 from "@assets/replay_memories/25-memory.jpeg";
-import memory26 from "@assets/replay_memories/26-memory.jpeg";
-import memory27 from "@assets/replay_memories/27-memory.jpeg";
-import memory28 from "@assets/replay_memories/28-memory.jpeg";
-import memory29 from "@assets/replay_memories/29-memory.jpeg";
-import memory30 from "@assets/replay_memories/30-memory.jpeg";
-import memory31 from "@assets/replay_memories/31-memory.jpeg";
-import memory32 from "@assets/replay_memories/32-memory.jpeg";
-import memory33 from "@assets/replay_memories/33-memory.jpeg";
-import memory34 from "@assets/replay_memories/34-memory.JPG";
-import memory35 from "@assets/replay_memories/35-memory.JPG";
-import memory36 from "@assets/replay_memories/36-memory.JPG";
+import memory1 from "@assets/replay_memories/template-1_1.jpg";
+import memory2 from "@assets/replay_memories/template-1_2.jpg";
+import memory3 from "@assets/replay_memories/template-1_3.jpg";
+import memory4 from "@assets/replay_memories/template-1_4.jpg";
+import memory5 from "@assets/replay_memories/template-1_5.jpg";
+import memory6 from "@assets/replay_memories/template-6_1.jpg";
+import memory7 from "@assets/replay_memories/template-6_2.jpg";
+import memory8 from "@assets/replay_memories/template-6_3.jpg";
+import memory9 from "@assets/replay_memories/template-6_4.jpg";
+import memory10 from "@assets/replay_memories/template-6_5.jpg";
+import memory11 from "@assets/replay_memories/template-11_1.jpg";
+import memory12 from "@assets/replay_memories/template-11_2.jpg";
+import memory13 from "@assets/replay_memories/template-11_3.jpg";
+import memory14 from "@assets/replay_memories/template-11_4.jpg";
+import memory15 from "@assets/replay_memories/template-11_5.jpg";
+import memory16 from "@assets/replay_memories/template-16_1.jpg";
+import memory17 from "@assets/replay_memories/template-16_2.jpg";
+import memory18 from "@assets/replay_memories/template-16_3.jpg";
+import memory19 from "@assets/replay_memories/template-16_4.jpg";
+import memory20 from "@assets/replay_memories/template-16_5.jpg";
+import memory21 from "@assets/replay_memories/template-21_1.jpg";
+import memory22 from "@assets/replay_memories/template-21_2.jpg";
+import memory23 from "@assets/replay_memories/template-21_3.jpg";
+import memory24 from "@assets/replay_memories/template-21_4.jpg";
+import memory25 from "@assets/replay_memories/template-21_5.jpg";
+import memory26 from "@assets/replay_memories/template-26_1.jpg";
+import memory27 from "@assets/replay_memories/template-26_2.jpg";
+import memory28 from "@assets/replay_memories/template-26_3.jpg";
+import memory29 from "@assets/replay_memories/template-26_4.jpg";
+import memory30 from "@assets/replay_memories/template-26_5.jpg";
+import memory31 from "@assets/replay_memories/template-31_1.jpg";
+import memory32 from "@assets/replay_memories/template-31_2.jpg";
+import memory33 from "@assets/replay_memories/template-31_3.jpg";
+import memory34 from "@assets/replay_memories/template-31_4.jpg";
+import memory35 from "@assets/replay_memories/template-31_5.jpg";
+import memory36 from "@assets/replay_memories/template-36.jpg";
 
 type Frame = {
   src: string;
@@ -236,9 +236,9 @@ export default function ReplayStoryPage() {
       <div className="fixed inset-0 flex h-screen flex-col justify-center px-6 pb-8 pt-20 md:px-10 md:pb-12">
         <div className="mx-auto max-w-5xl text-center">
           <p className="mb-3 text-xs uppercase tracking-[0.3em] text-stone-500">Replay Our Story</p>
-          <h1 className="text-5xl font-semibold tracking-tight text-stone-900 md:text-7xl">From Our Beginning</h1>
+          <h1 className="text-5xl font-semibold tracking-tight text-stone-900 md:text-7xl">Our Memories</h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-stone-600 md:text-xl">
-            Scroll down and our polaroids move to the right like a carousel.
+            Scroll down and the polaroids move to the right like a carousel.
           </p>
         </div>
 
@@ -272,7 +272,7 @@ export default function ReplayStoryPage() {
           style={{ opacity: endPromptOpacity, y: endPromptY }}
           className="mt-3 text-center text-lg text-stone-700 md:text-xl"
         >
-          are you ready to make more memories with me?
+          Ready to make more memories together?
         </motion.p>
       </div>
     </main>
